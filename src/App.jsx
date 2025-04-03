@@ -1,7 +1,7 @@
 import { useState, useEffect} from 'react'
 import './styles/App.css'
 import Game from './components/Game'
-import CurrentVerbAndPreposition from './components/currentVerbAndPreposition'
+import CurrentVerbAndPreposition from './components/CurrentVerbAndPreposition'
 import VERB_LIST from './assets/verblist'
 
 function App() {
