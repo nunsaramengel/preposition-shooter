@@ -13,6 +13,7 @@ function App() {
   const [score, setScore] = useState(0)
   const [currentVerbAndPreposition, setCurrentVerbAndPreposition] = useState(INITIAL_VERB)
   const [shield, setShield] = useState(INITIAL_SHIELD)
+  const [credits, setCredits] = useState(2000)
 
   const makeVerb = () => {
     const randomVerb = VERB_LIST[Math.floor(Math.random() * VERB_LIST.length)]
@@ -56,7 +57,15 @@ console.log(`Die 14 Präpositionen lauten: ${prepList}`);
           <br />
             <Shield shield={shield} setShield={setShield}></Shield>
         </h1>
+        <h1 style={{textAlign: "right"}}>
+          <span lang="ko" style={{color: "violet",}}>크레딧:</span>
+          <br />
+            <span style={{ color: "turquoise" }}>
+          {credits}
+        </span>
+        </h1>
         <CurrentVerbAndPreposition currentVerbAndPreposition={currentVerbAndPreposition} />
+        <br /><br />
       </Game>
     </div>
   )
