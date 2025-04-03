@@ -165,7 +165,7 @@ export const RESOURCES = [
         imgPath: '',
         initialValue: 10,
         currentValue: 2,
-        color: '#1c1c1c',
+        color: '#2e2e2e',
         preposition: "in"
     },
 

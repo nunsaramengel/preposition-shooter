@@ -333,7 +333,7 @@ function spawnAsteroid() {
                 {/* The Phaser game will be rendered here */}
             <Resources />
             </div>
-            <div id="info-panel" style={{ width: "200px", padding: "10px", margin: "0", padding: "0" }}>
+            <div id="info-panel" style={{ width: "200px",  margin: "0", padding: "0" }}>
                 {children}
             </div>
         </div>
