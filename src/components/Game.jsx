@@ -112,6 +112,8 @@ const Game = ({ score, setScore, children, shield, setShield }) => {
                 },
             });
 
+
+
             // Create stars first
             for (let i = 0; i < NUMBER_OF_STARS; i++) {
                 const star = createStar.call(this);
@@ -231,7 +233,7 @@ function spawnAsteroid() {
     asteroid.setScale(0.47);
 
     // Set random vertical speed between 50 and 150
-    const randomSpeed = Phaser.Math.Between(50, 150);
+    const randomSpeed = Phaser.Math.Between(200, 550);
     asteroid.setVelocityY(randomSpeed);
 
     // Set random angular velocity for rotation
