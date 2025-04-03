@@ -37,3 +37,7 @@
   font-family: yoon-px-pixelbatang, sans-serif;
   font-weight: 900;
 }
+
+.info-panel *{
+  text-align: right;
+}

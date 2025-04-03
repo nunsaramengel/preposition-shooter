@@ -198,23 +198,42 @@ const Game = ({ score, setScore, children }) => {
             return { x, y, size, speed, graphics };
         }
 
-        function spawnAsteroid() {
-            const x = Phaser.Math.Between(0, 800);
-            // Randomly select one asteroid image from the array
-            const randomAsteroidImage = asteroidImages[Phaser.Math.Between(0, asteroidImages.length - 1)];
-            const asteroid = asteroids.create(x, 0, randomAsteroidImage);
+function spawnAsteroid() {
+    const MIN_DISTANCE = 50; // Minimum distance between asteroids
+    let x, y;
+    let isValidPosition = false;
 
-            // Scale the asteroid to 2/3 of its original size
-            asteroid.setScale(0.47);
+    // Try to find a valid position for the new asteroid
+    while (!isValidPosition) {
+        x = Phaser.Math.Between(0, 800);
+        y = 0; // All asteroids start from the top
 
-            // Set random vertical speed between 50 and 150
-            const randomSpeed = Phaser.Math.Between(50, 150);
-            asteroid.setVelocityY(randomSpeed);
+        // Check if the new position is valid
+        isValidPosition = true;
+        asteroids.children.iterate((existingAsteroid) => {
+            const distance = Phaser.Math.Distance.Between(x, y, existingAsteroid.x, existingAsteroid.y);
+            if (distance < MIN_DISTANCE) {
+                isValidPosition = false; // Found an existing asteroid too close
+            }
+        });
+    }
 
-            // Set random angular velocity for rotation
-            const randomRotationSpeed = Phaser.Math.Between(ASTEROID_ROTATION_SPEED * -1, ASTEROID_ROTATION_SPEED);
-            asteroid.setAngularVelocity(randomRotationSpeed);
-        }
+    // Randomly select one asteroid image from the array
+    const randomAsteroidImage = asteroidImages[Phaser.Math.Between(0, asteroidImages.length - 1)];
+    const asteroid = asteroids.create(x, y, randomAsteroidImage);
+
+    // Scale the asteroid to 2/3 of its original size
+    asteroid.setScale(0.47);
+
+    // Set random vertical speed between 50 and 150
+    const randomSpeed = Phaser.Math.Between(50, 150);
+    asteroid.setVelocityY(randomSpeed);
+
+    // Set random angular velocity for rotation
+    const randomRotationSpeed = Phaser.Math.Between(ASTEROID_ROTATION_SPEED * -1, ASTEROID_ROTATION_SPEED);
+    asteroid.setAngularVelocity(randomRotationSpeed);
+}
+
 
         function shootLasers() {
             if (lasers.getLength() < lasers.maxSize) {

@@ -41,7 +41,13 @@ console.log(`Die 14 Präpositionen lauten: ${prepList}`);
   return (
     <div style={{ display: "float" }}>
       <Game score={score} setScore={setScore} style={{display: "flex"}}>
-        <h1 style={{ lang: "de", color: "violet" }}>SCORE: <span style={{ lang: "de", color: "turquoise" }}>{score}</span></h1>
+        <h1 style={{ lang: "de", color: "violet", textAlign: "right" }}>
+          SCORE:
+          <br />
+          <span style={{ lang: "de", color: "turquoise" }}>
+            {score}
+          </span>
+        </h1>
         <CurrentVerbAndPreposition currentVerbAndPreposition={currentVerbAndPreposition} />
       </Game>
     </div>
