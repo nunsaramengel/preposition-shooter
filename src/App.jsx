@@ -52,7 +52,7 @@ console.log(`Die 14 Präpositionen lauten: ${prepList}`);
             {score}
           </span>
           <br /><br />
-          방어막:
+          <span lang="ko">방어막:</span>
           <br />
             <Shield shield={shield} setShield={setShield}></Shield>
         </h1>
