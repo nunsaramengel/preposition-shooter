@@ -1,33 +1,31 @@
-import React from 'react'
+import React from 'react';
 import { RESOURCES as resourceData } from '../assets/resources.js';
 
 const Resources = () => {
-
-
-    const RES_DATA = resourceData
-  return (
-      <div style={{
-          position: "absolute", 
-          top: "660px",
-          left: "220px",
-           color: "red"
-      }}>
-          {RES_DATA.map((resource, index) =>
-            (
-                <span key={index}>
-                  <span style={{ color: `${resource.color}`, fontSize: "3rem", verticalAlign: "middle", display: "inline-block", transform: "translateY(-5px)" }}>
-                    &#9632; {/* oder ● für den gefüllten Kreis */}
+    const RES_DATA = resourceData;
+    return (
+        <div style={{
+            position: "absolute", 
+            top: "660px",
+            left: "220px",
+            color: "red",
+            display: "flex", // Flexbox auf die äußere div anwenden
+            flexWrap: "wrap",
+            width: "800px"// Damit die Elemente in die nächste Zeile umgebrochen werden, wenn der Platz nicht ausreicht
+        }}>
+            {RES_DATA.map((resource, index) => (
+                <div key={index} style={{ width: "100px", margin: "5px" }}> {/* margin hinzufügen für Abstand */}
+                    <span lang="de" style={{color: `${resource.color}`}}>{resource.preposition}</span>
+                    <span style={{ color: `${resource.color}`, fontSize: "3rem", verticalAlign: "middle", display: "inline-block", transform: "translateY(-5px)" }}>
+                        &#9632; {/* oder ● für den gefüllten Kreis */}
                     </span>
                     <span lang="de" style={{ color: "white" }}>
                         {resource.currentValue}
-                  </span>
-                  &nbsp;
-                  &nbsp;
-                  </span>
-            ))
-        }
-      </div>
-  )
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
 }
 
-export default Resources
+export default Resources;

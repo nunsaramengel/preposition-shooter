@@ -7,7 +7,7 @@ export const RESOURCES = [
         ko: "금",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 27,
         color: '#f4d66b',
         preposition: "von"
     },
@@ -19,7 +19,7 @@ export const RESOURCES = [
         ko: "알루미늄",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 11,
         color: '#a8b8c8',
         preposition: "auf"
     },
@@ -31,7 +31,7 @@ export const RESOURCES = [
         ko: "티타늄",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 6,
         color: '#b0b0b0',
         preposition: "mit"
     },
@@ -44,7 +44,7 @@ export const RESOURCES = [
         ko: "실리콘",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 5,
         color: '#d9d9d9',
         preposition: "über"
 
@@ -56,7 +56,7 @@ export const RESOURCES = [
         ko: "유리",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 7,
         color: '#e0e0e0',
         preposition: "für"
 
@@ -68,7 +68,7 @@ export const RESOURCES = [
         ko: "수소",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 2,
         color: '#00bfff',
         preposition: "bei"
 
@@ -104,7 +104,7 @@ export const RESOURCES = [
         ko: "리튬",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 7,
         color: '#ff69b4',
         preposition: "an"
 
@@ -116,7 +116,7 @@ export const RESOURCES = [
         ko: "구리",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 1,
         color: '#bb7333',
         preposition: "zu"
 
@@ -128,7 +128,7 @@ export const RESOURCES = [
         ko: "은",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 2,
         color: '#c0c0c0',
         preposition: "nach"
 
@@ -139,8 +139,8 @@ export const RESOURCES = [
         symbol: "X+ + e-",
         ko: "플라즈마",
         imgPath: '',
-        initialValue: 100,
-        currentValue: 100,
+        initialValue: 10,
+        currentValue: 4,
         color: '#ff00ff',
         preposition: "gegen"
 
@@ -152,7 +152,7 @@ export const RESOURCES = [
         ko: "플라스틱",
         imgPath: '',
         initialValue: 0,
-        currentValue: 0,
+        currentValue: 3,
         color: '#FE0000',
         preposition: "vor"
 
@@ -163,8 +163,8 @@ export const RESOURCES = [
         symbol: "C",
         ko: "금",
         imgPath: '',
-        initialValue: 100,
-        currentValue: 100,
+        initialValue: 10,
+        currentValue: 2,
         color: '#1c1c1c',
         preposition: "in"
     },
