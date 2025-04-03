@@ -70,7 +70,8 @@ const Game = ({ score, setScore, children, shield, setShield }) => {
                     shipVelocityX = 0; // No movement
                 }
             }
-        };
+            console.log(`Beta: ${beta}, Ship Velocity X: ${shipVelocityX}`); // Debugging line
+        };  
 
     // Add event listener for device orientation
     window.addEventListener('deviceorientation', handleOrientation);
@@ -156,6 +157,8 @@ const Game = ({ score, setScore, children, shield, setShield }) => {
         }
 
         function update() {
+
+            ship.setVelocityX(shipVelocityX)
             // Move the starship
             if (cursors.left.isDown) {
                 ship.setVelocityX(SHIP_VELOCITY * -1);
