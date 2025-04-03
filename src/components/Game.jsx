@@ -53,6 +53,27 @@ const Game = ({ score, setScore, children }) => {
 
         game.canvas.id = 'game-canvas';
 
+        let shipVelocityX = 0;
+
+    // Device orientation variables
+        const handleOrientation = (event) => {
+            const { beta } = event; // beta represents the tilt in the front-to-back direction
+            if (beta) {
+                // Map the beta value to a range for ship movement
+                const tiltThreshold = 10; // Adjust this value as needed
+                if (beta > tiltThreshold) {
+                    shipVelocityX = SHIP_VELOCITY; // Move right
+                } else if (beta < -tiltThreshold) {
+                    shipVelocityX = -SHIP_VELOCITY; // Move left
+                } else {
+                    shipVelocityX = 0; // No movement
+                }
+            }
+        };
+
+    // Add event listener for device orientation
+    window.addEventListener('deviceorientation', handleOrientation);
+
 
         function create() {
             explosionSound = new Howl({
@@ -140,7 +161,7 @@ const Game = ({ score, setScore, children }) => {
             } else if (cursors.right.isDown) {
                 ship.setVelocityX(SHIP_VELOCITY);
             } else {
-                ship.setVelocityX(0);
+                ship.setVelocityX(shipVelocityX);
             }
 
             // Update laser positions and destroy if off-screen
@@ -263,6 +284,7 @@ const Game = ({ score, setScore, children }) => {
         }
 
         return () => {
+            window.removeEventListener('deviceorientation', handleOrientation)
             game.destroy(true); // Clean up the game instance on component unmount
         };
     }, []);
