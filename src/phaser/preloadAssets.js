@@ -18,4 +18,5 @@ export function preloadAssets(scene) {
     scene.load.audio('explosionSound', 'audio/explosion.mp3');
     scene.load.audio('laserSound', 'audio/laser.mp3');
     scene.load.audio('howlSound', 'audio/horizon_of_the_unknown.mp3'); // Load the new sound
+    scene.load.audio('hitSound', 'audio/hit.wav')
 }

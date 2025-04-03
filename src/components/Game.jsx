@@ -6,7 +6,7 @@ import { preloadAssets } from '../phaser/preloadAssets';
 import Resources from './Resources';
 
 const Game = ({ score, setScore, children, shield, setShield }) => {
-    let explosionSound, laserSound, howlSound; // Added howlSound
+    let explosionSound, laserSound, howlSound, hitSound; // Added howlSound
 
     const NUMBER_OF_STARS = 1000;
     const SHIP_VELOCITY = 600;
@@ -100,6 +100,8 @@ const Game = ({ score, setScore, children, shield, setShield }) => {
                 },
             });
 
+
+
             howlSound = new Howl({ // Create Howl instance for the new sound
                 src: ['audio/horizon_of_the_unknown.mp3'],
                 volume: 1.0,
@@ -112,7 +114,18 @@ const Game = ({ score, setScore, children, shield, setShield }) => {
                 },
             });
 
+            hitSound = new Howl({
+                src: ['audio/hit.wav'],
+                volume: 1.0,
+                onload: () => {
+                    console.log("hit sound loaded")
+                },
+                onloaderror: (id, error) => {
+                    console.error('Error loading howl sound:', error)
+                }
 
+            } )
+        
 
             // Create stars first
             for (let i = 0; i < NUMBER_OF_STARS; i++) {
@@ -319,15 +332,12 @@ function spawnAsteroid() {
                 // Ensure the interval is cleared if the component unmounts
                     return () => clearInterval(flickerInterval);
              };
-        const gameOver = () => {
-                asteroids.clear(true, true);
-                lasers.clear(true, true);
-                ship.setVelocityX(0)
-        }
+       
         // Function to handle ship hitting an asteroid
         function hitShip(ship, asteroid) {
             // Flicker effect and reduce shield
             flickerShip();
+            hitSound.play()
             reduceShield(1); // Reduce shield by 1
             asteroid.destroy(); // Optionally destroy the asteroid on collision
         }
@@ -341,19 +351,31 @@ function spawnAsteroid() {
         };
     }, []);
 
+            const gameOver = () => {
+                asteroids.clear(true, true);
+                lasers.clear(true, true);
+                ship.setVelocityX(0)
+                alert("GAME OVER")
+            }
+
+
     useEffect(() => {
         if (shield <= 0) {
-
-            alert("GAME OVER")
+            howlSound.stop()
             gameOver();
         }
     }, [shield])
 
+
+
 const reduceShield = (value) => {
     if (shield > 0) {
-        setShield(prev => Math.max(prev - value, 0)); // Ensure shield doesn't go below 0
+        setShield(prev => {
+            const newShieldValue = Math.max(prev - value, 0); // Ensure shield doesn't go below 0
+            console.log("shield value:", newShieldValue);
+            return newShieldValue;
+        });
     }
-    console.log("shield value:", shield);
 }
 
     const increaseShield = (e, value) => {
