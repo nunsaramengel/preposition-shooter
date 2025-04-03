@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const Shield = ({ shield }) => {
+const Shield = ({ shield, setShield }) => {
+
+
+    useEffect(() => {
+        const newShieldValue = shield
+        setShield(newShieldValue)
+        console.log("shield value changed")
+    }, [shield]) 
   // Quadrat-Symbole
   const filledSquare = '\u25A0'; // Gefülltes Quadrat
   const emptySquare = '\u25A1'; // Leeres Quadrat

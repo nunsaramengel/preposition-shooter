@@ -154,6 +154,7 @@ const Game = ({ score, setScore, children, shield, setShield }) => {
 
             // Collision detection
             this.physics.add.overlap(lasers, asteroids, hitAsteroid, null, this);
+            this.physics.add.overlap(ship, asteroids, hitShip, null, this);
         }
 
         function update() {
@@ -268,28 +269,21 @@ function spawnAsteroid() {
             }
         }
 
-        function hitAsteroid(laser, asteroid) {
-            const asteroidCenterX = asteroid.x
-                        const asteroidCenterY = asteroid.y;
 
-            // Get the position of the laser
+
+    function hitAsteroid(laser, asteroid) {
+            const asteroidCenterX = asteroid.x;
+            const asteroidCenterY = asteroid.y;
+
             const laserX = laser.x;
             const laserY = laser.y;
 
-            // Calculate the distance between the laser and the center of the asteroid
             const distance = Phaser.Math.Distance.Between(laserX, laserY, asteroidCenterX, asteroidCenterY);
-
-            // Define the size of the asteroid (assuming it's a square sprite)
-            const asteroidWidth = asteroid.width; // Width of the asteroid sprite
-            const asteroidHeight = asteroid.height; // Height of the asteroid sprite
-
-            // Calculate the radius (you can use either width or height, assuming they are similar)
+            const asteroidWidth = asteroid.width;
+            const asteroidHeight = asteroid.height;
             const radius = Math.min(asteroidWidth, asteroidHeight) / 2;
+            const collisionThreshold = radius * 0.75;
 
-            // Define a threshold for the collision (3/4 of the radius)
-            const collisionThreshold = radius * 0.75; // 3/4 of the radius
-
-            // Check if the distance is less than the threshold
             if (distance < collisionThreshold) {
                 const explosion = this.physics.add.sprite(asteroid.x, asteroid.y, 'explosion');
                 explosion.play('explode');
@@ -306,20 +300,59 @@ function spawnAsteroid() {
             }
         }
 
+        
+                const flickerShip = () => {
+                    const originalAlpha = ship.alpha; // Store the original alpha value
+                    let flickerCount = 0; // Count how many times to flicker
+                    const flickerInterval = setInterval(() => {
+                    ship.alpha = ship.alpha === 1 ? 0 : 1; // Toggle between fully visible and invisible
+                    flickerCount++;
+        
+                    if (flickerCount >= 10) { // Flicker 10 times (5 seconds total)
+                        clearInterval(flickerInterval); // Clear the interval
+                        ship.alpha = originalAlpha; // Restore original alpha
+                        }
+                    }, 150); // Flicker every 150ms
+        
+                // Ensure the interval is cleared if the component unmounts
+                    return () => clearInterval(flickerInterval);
+             };
+        const gameOver = () => {
+                asteroids.clear(true, true);
+                lasers.clear(true, true);
+                ship.setVelocityX(0)
+        }
+        // Function to handle ship hitting an asteroid
+        function hitShip(ship, asteroid) {
+            // Flicker effect and reduce shield
+            flickerShip();
+            reduceShield(1); // Reduce shield by 1
+            asteroid.destroy(); // Optionally destroy the asteroid on collision
+        }
+
+
+        
+
         return () => {
             window.removeEventListener('deviceorientation', handleOrientation)
             game.destroy(true); // Clean up the game instance on component unmount
         };
     }, []);
 
-    const reduceShield = (e, value) => {
-        e.preventDefault()
-        if (shield - value > 0) {
-            
-            setShield(prev => prev - value)
+    useEffect(() => {
+        if (shield <= 0) {
+
+            alert("GAME OVER")
+            gameOver();
         }
-        console.log("shield value:", shield)
+    }, [shield])
+
+const reduceShield = (value) => {
+    if (shield > 0) {
+        setShield(prev => Math.max(prev - value, 0)); // Ensure shield doesn't go below 0
     }
+    console.log("shield value:", shield);
+}
 
     const increaseShield = (e, value) => {
         e.preventDefault()
