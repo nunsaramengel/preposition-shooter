@@ -3,8 +3,9 @@ import Phaser from 'phaser';
 import { Howl } from 'howler';
 import "../styles/App.css";
 import { preloadAssets } from '../phaser/preloadAssets';
+import Resources from './Resources';
 
-const Game = ({ score, setScore, children }) => {
+const Game = ({ score, setScore, children, shield, setShield }) => {
     let explosionSound, laserSound, howlSound; // Added howlSound
 
     const NUMBER_OF_STARS = 1000;
@@ -308,10 +309,29 @@ function spawnAsteroid() {
         };
     }, []);
 
+    const reduceShield = (e, value) => {
+        e.preventDefault()
+        if (shield - value > 0) {
+            
+            setShield(prev => prev - value)
+        }
+        console.log("shield value:", shield)
+    }
+
+    const increaseShield = (e, value) => {
+        e.preventDefault()
+        if (shield + value < 10) {
+            
+            setShield(prev => prev + value)
+        }
+        console.log("shield value:", shield)
+    }
+
     return (
         <div style={{ display: "flex", alignItems: "flex-start", flexDirection: "column", width: "100%", height: "100%", margin: "0" }}>
             <div id="game" style={{ margin: "0", padding: "0" }}>
                 {/* The Phaser game will be rendered here */}
+            <Resources />
             </div>
             <div id="info-panel" style={{ width: "200px", padding: "10px", margin: "0", padding: "0" }}>
                 {children}

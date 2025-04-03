@@ -3,12 +3,16 @@ import './styles/App.css'
 import Game from './components/Game'
 import CurrentVerbAndPreposition from './components/CurrentVerbAndPreposition'
 import VERB_LIST from './assets/verblist'
+import Shield from './components/Shield'
 
 function App() {
   const INITIAL_VERB = VERB_LIST[Math.floor(Math.random() * VERB_LIST.length)];
+  const INITIAL_SHIELD = 10;
 
+  // information
   const [score, setScore] = useState(0)
   const [currentVerbAndPreposition, setCurrentVerbAndPreposition] = useState(INITIAL_VERB)
+  const [shield, setShield] = useState(INITIAL_SHIELD)
 
   const makeVerb = () => {
     const randomVerb = VERB_LIST[Math.floor(Math.random() * VERB_LIST.length)]
@@ -40,13 +44,17 @@ console.log(`Die 14 Präpositionen lauten: ${prepList}`);
 
   return (
     <div style={{ display: "float" }}>
-      <Game score={score} setScore={setScore} style={{display: "flex"}}>
+      <Game score={score} setScore={setScore} shield={shield} setShield={setShield} style={{display: "flex"}}>
         <h1 style={{ lang: "de", color: "violet", textAlign: "right" }}>
           SCORE:
           <br />
           <span style={{ lang: "de", color: "turquoise" }}>
             {score}
           </span>
+          <br /><br />
+          방어막:
+          <br />
+            <Shield shield={shield} setShield={setShield}></Shield>
         </h1>
         <CurrentVerbAndPreposition currentVerbAndPreposition={currentVerbAndPreposition} />
       </Game>
