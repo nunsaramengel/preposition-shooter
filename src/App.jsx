@@ -46,10 +46,10 @@ console.log(`Die 14 Präpositionen lauten: ${prepList}`);
   return (
     <div style={{ display: "float" }}>
       <Game score={score} setScore={setScore} shield={shield} setShield={setShield} style={{display: "flex"}}>
-        <h1 style={{ lang: "de", color: "violet", textAlign: "right" }}>
+        <h1 style={{ lang: "de", color: "violet", textAlign: "right", padding: "12px", textShadow: "0 0 8px white" }}>
           SCORE:
           <br />
-          <span style={{ lang: "de", color: "turquoise" }}>
+          <span lang="de" style={{  color: "turquoise", textShadow: "0 0 8px white" }}>
             {score}
           </span>
           <br /><br />
@@ -58,9 +58,9 @@ console.log(`Die 14 Präpositionen lauten: ${prepList}`);
             <Shield shield={shield} setShield={setShield}></Shield>
         </h1>
         <h1 style={{textAlign: "right"}}>
-          <span lang="ko" style={{color: "violet",}}>크레딧:</span>
+          <span lang="ko" style={{color: "violet", padding: "12px", textShadow: "0 0 8px white"}}>크레딧:</span>
           <br />
-            <span style={{ color: "turquoise" }}>
+            <span style={{ color: "turquoise", padding: "12px", textShadow: "0 0 8px white" }}>
           {credits}
         </span>
         </h1>
