@@ -68,6 +68,8 @@ class Shooter extends Phaser.Scene {
             onloaderror: (id, error) => console.error('Error loading ship explosion sound:', error)
         });
 
+       
+
         this.NUMBER_OF_STARS = 1000;
         this.SHIP_VELOCITY = 600;
         this.LASER_SCALE = 0.15;

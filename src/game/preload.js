@@ -32,4 +32,6 @@ export function preloadAssets(scene) {
     scene.load.audio('gameoverSound', 'audio/8bit_synth_defeat.wav')
     scene.load.audio('failureDrumSound', 'audio/failure_drum.mp3')
     scene.load.audio('shipExplosionSound', 'audio/shipExplosion.wav')
+    scene.load.audio('consoleClick', 'audio/console_click.wav')
+    scene.load.audio('beepSound', 'audio/beep.wav')
 }

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import GameStore from '../GameStore';
 import { Howl } from 'howler';
+import { preloadAssets } from '../preload';
 
 export default class MainMenu extends Phaser.Scene {
     constructor() {
@@ -27,8 +28,19 @@ export default class MainMenu extends Phaser.Scene {
         this.soundPlaying = false; // Flag to track if the sound is playing
     }
 
+    preload() {
+        preloadAssets(this)
+    }
+
     create() {
         this.textDisplay = this.add.text(100, 100, this.currentText, { fontSize: "20px", fill: '#fff' });
+
+         this.consoleClickSound = new Howl({
+            src: ['audio/console_click.wav'],
+            volume: 1,
+            onload: () => console.log('Console click sound loaded'),
+            onloaderror: (id, error) => console.error('Error loading ship explosion sound: ', error, " ## id: ", id)
+        })
 
         // Start the sound when the typewriter effect begins
         this.transmissionSound.play();
@@ -40,14 +52,21 @@ export default class MainMenu extends Phaser.Scene {
             callbackScope: this,
             loop: true
         })
+        this.beepSound = new Howl({
+            src: ['audio/beep.wav']
+        })
+
 
         const startGameButton = this.add.text(100, 340, '전치사 사냥 시작', { fontSize: '20px', fill: '#12F1D3' })
             .setInteractive()
             .on('pointerdown', () => {
+                this.beepSound.play()
+                this.transmissionSound.stop()
                 this.scene.start('Shooter');
             })
             .on('pointerover', () => {
                 startGameButton.setStyle({ fill: '#ff0ff0' });
+                this.consoleClickSound.play()
             })
             .on('pointerout', () => {
                 startGameButton.setStyle({ fill: '#12F1D3' });
