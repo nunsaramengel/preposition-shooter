@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import NameInput from './scenes/NameInput.jsx';
 import MainMenu from './scenes/MainMenu.jsx';
 import Shooter from './scenes/Shooter.jsx';
+import PrepositionCruiser from './scenes/PrepositionCruiser.jsx';
 import StarBase from './scenes/StarBase.jsx';
 import GameOver from './scenes/GameOver.jsx';
 import { preloadAssets } from './preload.js';
@@ -22,6 +23,7 @@ export default function PhaserGame() {
         MainMenu,
         Shooter,
         StarBase,
+        PrepositionCruiser,
         GameOver
       ],
       physics: {
