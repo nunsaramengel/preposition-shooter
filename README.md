@@ -1,12 +1,10 @@
-# React + Vite
+독일어 전치사 슈팅게임.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+독일어 전치사 지도 동사를 외우기 위한 어케이드 슈팅 게임입니다.
 
-Currently, two official plugins are available:
+함선을 타고 우주를 여행하며 지구에 도달할 수 있는 소행성을 쏘아 없애야 하는데요. 
+쏘아 없애지 못한 소행성이 하나씩 늘어날수록 인류의 생존에 대한 희망이 줄어듭니다.
+여행하는 동안 우주에서 떠다니는 자원과 재료를 획득하고 수집할 수 있습니다.
+그리고 우주 정거장이 보이시면, 친구인지 적인지 증명하기 위해 올바른 비밀번호를 말하시면 거기서 함선업그레이드와 확장템을 구매하실 수 있어요.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<img width="1300" alt="Screenshot 2025-04-07 at 01 34 27" src="https://github.com/user-attachments/assets/905eab7f-bf88-4a56-98ce-58899a273116" />
