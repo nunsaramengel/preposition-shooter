@@ -1,0 +1,26 @@
+*{
+    color: white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.menu-h1{
+    color: violet;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1),         0 0 10px rgba(255, 255, 255, 0.14);
+}
+
+body{
+    background-color: black;
+}
+
+[lang="de"]{
+    font-family: "pixelify-sans", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+[lang="ko"]{
+    font-family: yoon-px-pixman, sans-serif;
+}
+
