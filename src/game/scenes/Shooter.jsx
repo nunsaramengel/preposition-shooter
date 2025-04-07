@@ -31,7 +31,7 @@ class Shooter extends Phaser.Scene {
     create() {
         this.score = GameStore.score;
         this.shield = GameStore.shield;
-
+        this.laserSpeedUpdate = GameStore.laserSpeedUpdate;
         this.reduceShield = () => {
             const newShieldValue = Math.max(0, this.shield - 1);
             GameStore.update({ shield: newShieldValue });
@@ -79,11 +79,11 @@ class Shooter extends Phaser.Scene {
         this.ASTEROID_MIN_SPEED = 200;
         this.ASTEROID_MAX_SPEED = 400;
         this.asteroidImages = ['asteroid1', 'asteroid2', 'asteroid3', 'asteroid4', 'asteroid5'];
-        this.laserSpeed = 1100;
+        this.laserSpeed = 800 + this.laserSpeedUpdate;
         this.shipVelocityX = 0;
         this.stars = [];
         this.ship = this.physics.add.image(400, 550, 'ship').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(1);
-        this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 10 });
+        this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 6 });
         this.asteroids = this.physics.add.group();
         this.powerups = this.physics.add.group();
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -177,6 +177,7 @@ class Shooter extends Phaser.Scene {
                 }
             }
         });
+
         this.powerups.children.iterate((powerup) => { if (powerup && powerup.y > 650) { powerup.destroy(); } }); // Destroy power-ups that go off-screen
         if (this.shield <= 0 && !this.isGameOverSequence) {
             this.startGameOverSequence();
@@ -247,6 +248,10 @@ class Shooter extends Phaser.Scene {
         const randomRotationSpeed = Phaser.Math.Between(this.ASTEROID_ROTATION_SPEED * -1, this.ASTEROID_ROTATION_SPEED);
         asteroid.setAngularVelocity(randomRotationSpeed);
         asteroid.scaleDirection = Math.random() < 0.5 ? 1 : -1;
+
+        // Füge den Trefferzähler und Flacker-Status hinzu
+        asteroid.hits = 0;
+        asteroid.isFlickering = false;
     }
 
     shootLasers() {
@@ -256,7 +261,7 @@ class Shooter extends Phaser.Scene {
             if (leftLaser) {
                 leftLaser.setActive(true);
                 leftLaser.setVisible(true);
-                leftLaser.setPosition(this.ship.x - shipWidth / 2 + 35, this.ship.y + 10);
+                leftLaser.setPosition(this.ship.x - shipWidth / 2 + 20, this.ship.y + 10);
                 leftLaser.setScale(this.LASER_SCALE);
                 leftLaser.setVelocityY(-this.laserSpeed);
                 this.laserSound.play();
@@ -265,7 +270,7 @@ class Shooter extends Phaser.Scene {
             if (rightLaser) {
                 rightLaser.setActive(true);
                 rightLaser.setVisible(true);
-                rightLaser.setPosition(this.ship.x + shipWidth / 2 - 35, this.ship.y + 10);
+                rightLaser.setPosition(this.ship.x + shipWidth / 2 - 20, this.ship.y + 10);
                 rightLaser.setScale(this.LASER_SCALE);
                 rightLaser.setVelocityY(-this.laserSpeed);
                 this.laserSound.play();
@@ -283,17 +288,41 @@ class Shooter extends Phaser.Scene {
         const asteroidHeight = asteroid.height;
         const radius = Math.min(asteroidWidth, asteroidHeight) / 2;
         const collisionThreshold = radius * 0.75;
+
         if (distance < collisionThreshold) {
-            const explosion = this.physics.add.sprite(asteroid.x, asteroid.y, 'explosion');
-            explosion.play('explode');
-            explosion.setScale(2)
-            this.explosionSound.play();
-            explosion.on('animationcomplete', () => {
-                explosion.destroy();
-            });
             laser.destroy();
-            asteroid.destroy();
-            this.setScore(100);
+            asteroid.hits++;
+
+            if (asteroid.hits === 1 && !asteroid.isFlickering) {
+                // Erster Treffer: Flackern starten
+                asteroid.isFlickering = true;
+                const originalAlpha = asteroid.alpha;
+                let flickerCount = 0;
+                const flickerInterval = setInterval(() => {
+                    asteroid.alpha = asteroid.alpha === 1 ? 0.2 : 1;
+                    flickerCount++;
+                    if (flickerCount >= 10) { // Flackert für ca. 1 Sekunde (10 * 100ms Intervall)
+                        clearInterval(flickerInterval);
+                        asteroid.alpha = originalAlpha;
+                        asteroid.isFlickering = false;
+                    }
+                }, 100);
+                asteroid.flickerInterval = flickerInterval; // Speichere das Intervall, falls nötig
+            } else if (asteroid.hits >= 2) {
+                // Zweiter Treffer (oder mehr): Zerstören
+                const explosion = this.physics.add.sprite(asteroid.x, asteroid.y, 'explosion');
+                explosion.play('explode');
+                explosion.setScale(2);
+                this.explosionSound.play();
+                explosion.on('animationcomplete', () => {
+                    explosion.destroy();
+                });
+                if (asteroid.flickerInterval) {
+                    clearInterval(asteroid.flickerInterval); // Stoppe das Flackern, falls es noch läuft
+                }
+                asteroid.destroy();
+                this.setScore(100);
+            }
         }
     }
 

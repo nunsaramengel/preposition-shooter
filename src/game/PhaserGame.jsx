@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
 import NameInput from './scenes/NameInput.jsx';
 import MainMenu from './scenes/MainMenu.jsx';
+import ApproachingStarBaseMonitor from './scenes/ApproachingStarBaseMonitor.jsx';
 import Shooter from './scenes/Shooter.jsx';
 import PrepositionCruiser from './scenes/PrepositionCruiser.jsx';
 import StarBase from './scenes/StarBase.jsx';
@@ -21,9 +22,10 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        PrepositionCruiser,
+        ApproachingStarBaseMonitor,
         Shooter,
         StarBase,
-        PrepositionCruiser,
         GameOver
       ],
       physics: {

@@ -9,6 +9,7 @@ export function preloadAssets(scene) {
     scene.load.image('asteroid3', 'img/asteroid03.png');
     scene.load.image('asteroid4', 'img/asteroid04.png');
     scene.load.image('asteroid5', 'img/asteroid05.png');
+    scene.load.image('starbaseLaser', 'img/starbase_laser.svg')
     scene.load.spritesheet('explosion', 'img/explosion.png', {
         frameWidth: 64,
         frameHeight: 64
@@ -17,11 +18,14 @@ export function preloadAssets(scene) {
         frameWidth: 64,
         frameHeight: 64
     });
+
+
     scene.load.image('alu', 'img/powerups/alu.png')
     scene.load.image('eisen', 'img/powerups/eisen.png')
     scene.load.image('gold', 'img/powerups/gold.png')
     scene.load.image('plastik', 'img/powerups/plastik.png')
     scene.load.image('shield', 'img/powerups/shield.png')
+    scene.load.image('starbase', 'img/starbase.svg')
 
     // AUDIO
     scene.load.audio('explosionSound', 'audio/explosion.mp3');

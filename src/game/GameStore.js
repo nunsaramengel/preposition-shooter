@@ -640,6 +640,7 @@ export const GameStore = {
     credits: 400,
     listeners: [],
     isGameOver: false,
+    laserSpeedUpdate: 0,
     currentScene: {
         nameinput: true,
         mainmenu: false,

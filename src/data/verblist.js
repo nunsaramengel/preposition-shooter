@@ -1,142 +1,962 @@
-const csvData = `
-abhängen von D to depend upon
-achten auf A to look after
-anfangen mit D to begin with
-ankommen auf A to depend upon
-antworten auf A to reply to
-sich ärgern über A to get upset about
-aufhören mit D to quit sth
-aufpassen auf A to look after
-sich aufregen über A to get upset about
-ausgeben für A to spend on
-sich bedanken bei D to thank sb.
-sich bedanken für A to thank for
-beginnen mit D to begin
-sich bemühen um A to strive for
-berichten über A to report on
-sich beschäftigen mit D to busy oneself with
-sich beschweren bei D to complain to
-bestehen aus D to consist of
-bestehen auf A to insist upon
-sich beteiligen an D to involve oneself with
-sich bewerben bei D to apply at (workplace)
-sich bewerben um A to apply for (job)
-sich beziehen auf A to refer to
-bitten um A to ask for
-danken für A to thank for
-denken an A to think of
-diskutieren über A to discuss about
-einladen zu D to invite to
-sich entscheiden für A to opt for
-sich entschließen zu D to decide upon
-sich entschuldigen bei D to apologise to
-sich entschuldigen für A to apologise for
-erfahren von D to hear about
-sich erholen von D to recover from
-sich erinnern an A to remember
-erkennen an D to know by
-sich erkündigen nach D to enquire about
-erschrecken über A to be shocked by
-erzählen über A to recall about
-erzählen von D to tell of
-fragen nach A to ask about
-sich freuen über A to be glad about
-sich freuen auf A to look forward to
-gehen um A to be about
-gehören zu D to belong to
-sich gewöhnen an A to get used to
-glauben an A to believe in
-gratulieren zu D to congratulate on
-halten für A to reckon as
-halten von D to think about / consider
-sich handeln um A to involve
-handeln von D to deal with (book etc.)
-helfen bei D to help with
-hindern an D to impede from
-hoffen auf A to hope for
-hören von D to hear from
-sich informieren über A to learn about
-sich interessen für A to be interested in
-klagen über A to complain about
-kämpfen für A to fight for
-kommen zu D to come to / attend
-sich konzentrieren auf A to concentrate on
-sich kümmern um A to take care of (task, problem)
-lachen über A to laugh at (joke)
-leiden an D to suffer from
-leiden über A to suffer as a result of
-nachdenken über A to think something over
-protestieren gegen A to protest against
-rechnen mit D to expect / reckon on
-reden über A to talk about
-reden von D to talk of
-riechen nach D to smell like / of
-sagen über A to say about
-sagen zu D to think about / say about / judge
-schicken an D to send (sth.) to
-schicken zu D to send (sb.) to
-schimpfen über A to moan about
-schmecken nach D to taste like / of
-schreiben an A to write to
-schützen vor D to protect against
-sein für A to be for (sth.)
-sein gegen A to be against (sth.)
-sorgen für A to care / provide for
-sprechen mit D to speak with
-sprechen über A to speak about
-sterben an D to die of
-streiten mit D to argue with
-streiten über A to argue about
-teilnehmen an D to take part in
-telefonieren mit D to call (sb.)
-sich treffen mit D to meet with
-sich treffen zu D to meet at (summit, sports game)
-überreden zu D to persuade (sb.) to
-sich unterhalten mit D to converse with
-sich unterhalten über A to converse about
-sich verabreden mit D to arrange to meet with (sb.)
-sich verabschieden von D to say goodbye to
-vergleichen mit D to compare with
-sich verlassen auf A to rely on (sb. / sth.)
-sich verlieben in A to fall in love with
-sich verstehen mit D to get along with (sb.)
-verstehen von D to know about
-sich vorbereiten auf A to prepare oneself for
-warnen vor D to warn about
-warten auf A to wait for
-sich wenden an A to turn / refer to
-werden zu D to turn into
-wissen von D to know about sth
-sich wundern über A to wonder about
-zuschauen bei D to spectate at
-zusehen bei D to watch(while doing sth.)
-zweifeln an A to doubt about `;
+import Preposition from "../classes/Preposition";
 
-// Split the CSV data into lines and map to an array of objects
-const csvLines = csvData.trim().split('\n');
-const VERB_LIST = csvLines.map(line => {
-    const words = line.split(/\s+/);
-    let verb,
-        preposition,
-        caseType,
-        english;
-
-    // Überprüfen, ob das erste Wort "sich" ist
-    if (words[0] === "sich") {
-        verb = words[0] + ' ' + words[1]; // "sich" + das nächste Wort
-        preposition = words[2];
-        caseType = words[3];
-        // Der Rest ist der englische Ausdruck
-        english = words.slice(4).join(' '); // Alle nachfolgenden Wörter
-    } else {
-        verb = words[0];
-        preposition = words[1];
-        caseType = words[2];
-        // Der Rest ist der englische Ausdruck
-        english = words.slice(3).join(' '); // Alle nachfolgenden Wörter
+const verbs = [
+    {
+        id: 0,
+        verb: "abhängen",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "에 달려있다",
+        level: 3
+    },
+    {
+        id: 1,
+        verb: "achten",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "돌보다",
+        level: 2
+    },
+    {
+        id: 2,
+        verb: "anfangen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "…으로 시작하다",
+        level: 1
+    },
+    {
+        id: 3,
+        verb: "ankommen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "…에 달려있다",
+        level: 4
+    }, {
+        id: 4,
+        verb: "antworten",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.von,
+        case: "A",
+        ko: "…에 답장하다",
+        level: 2
+    }, {
+        id: 5,
+        verb: "sich ärgern",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.fuer,
+        case: "A",
+        ko: "…에 대해 화내다",
+        level: 3
+    }, {
+        id: 6,
+        verb: "aufhören",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.gegen,
+        case: "D",
+        ko: "…을 그만두다",
+        level: 1
+    }, {
+        id: 7,
+        verb: "aufpassen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.vor,
+        case: "A",
+        ko: "돌보다",
+        level: 2
+    }, {
+        id: 8,
+        verb: "sich aufregen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "…에 대해 흥분하다",
+        level: 3
+    }, {
+        id: 9,
+        verb: "ausgeben",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.aus,
+        case: "A",
+        ko: "…에 쓰다",
+        level: 2
+    }, {
+        id: 10,
+        verb: "sich bedanken",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에게 감사하다",
+        level: 1
+    }, {
+        id: 11,
+        verb: "sich bedanken",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~에 대해 감사하다",
+        level: 2
+    }, {
+        id: 12,
+        verb: "beginnen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "시작하다",
+        level: 1
+    }, {
+        id: 13,
+        verb: "sich bemühen",
+        rightPreposition: Preposition.um,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~을 위해 노력하다",
+        level: 3
+    }, {
+        id: 14,
+        verb: "berichten",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.vor,
+        case: "A",
+        ko: "~에 대해 보도하다",
+        level: 2
+    }, {
+        id: 15,
+        verb: "sich beschäftigen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에 몰두하다",
+        level: 3
+    }, {
+        id: 16,
+        verb: "sich beschweren",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에게 불평하다",
+        level: 2
+    }, {
+        id: 17,
+        verb: "bestehen",
+        rightPreposition: Preposition.aus,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~으로 이루어져 있다",
+        level: 3
+    }, {
+        id: 18,
+        verb: "bestehen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~을 주장하다",
+        level: 4
+    }, {
+        id: 19,
+        verb: "sich beteiligen",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.vor,
+        case: "D",
+        ko: "~에 참여하다",
+        level: 3
+    }, {
+        id: 20,
+        verb: "sich bewerben",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "(직장) ~에 지원하다",
+        level: 2
+    }, {
+        id: 21,
+        verb: "sich bewerben",
+        rightPreposition: Preposition.um,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "(일) ~에 지원하다",
+        level: 3
+    }, {
+        id: 22,
+        verb: "sich beziehen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~을 언급하다",
+        level: 3
+    }, {
+        id: 23,
+        verb: "bitten",
+        rightPreposition: Preposition.um,
+        wrongPreposition: Preposition.vor,
+        case: "A",
+        ko: "~을 요청하다",
+        level: 1
+    }, {
+        id: 24,
+        verb: "danken",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.aus,
+        case: "A",
+        ko: "~에 대해 감사하다",
+        level: 2
+    }, {
+        id: 25,
+        verb: "denken",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~을 생각하다",
+        level: 2
+    }, {
+        id: 26,
+        verb: "diskutieren",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~에 대해 토론하다",
+        level: 2
+    }, {
+        id: 27,
+        verb: "einladen",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~에 초대하다",
+        level: 1
+    }, {
+        id: 28,
+        verb: "sich entscheiden",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~을 선택하다",
+        level: 3
+    }, {
+        id: 29,
+        verb: "sich entschließen",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.vor,
+        case: "D",
+        ko: "~하기로 결심하다",
+        level: 3
+    }, {
+        id: 30,
+        verb: "sich entschuldigen",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에게 사과하다",
+        level: 1
+    }, {
+        id: 31,
+        verb: "sich entschuldigen",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~에 대해 사과하다",
+        level: 2
+    }, {
+        id: 32,
+        verb: "erfahren",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.aus,
+        case: "D",
+        ko: "~에 대해 듣다",
+        level: 2
+    }, {
+        id: 33,
+        verb: "sich erholen",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~로부터 회복하다",
+        level: 3
+    }, {
+        id: 34,
+        verb: "sich erinnern",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~을 기억하다",
+        level: 1
+    }, {
+        id: 35,
+        verb: "erkennen",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "~으로 알다",
+        level: 3
+    }, {
+        id: 36,
+        verb: "sich erkundigen",
+        rightPreposition: Preposition.nach,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에 대해 문의하다",
+        level: 2
+    }, {
+        id: 37,
+        verb: "erschrecken",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.vor,
+        case: "A",
+        ko: "~에 놀라다",
+        level: 4
+    }, {
+        id: 38,
+        verb: "erzählen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~에 대해 이야기하다",
+        level: 2
+    }, {
+        id: 39,
+        verb: "erzählen",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에 대해 이야기하다",
+        level: 2
+    }, {
+        id: 40,
+        verb: "fragen",
+        rightPreposition: Preposition.nach,
+        wrongPreposition: Preposition.aus,
+        case: "A",
+        ko: "~에 대해 묻다",
+        level: 1
+    }, {
+        id: 41,
+        verb: "sich freuen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 대해 기뻐하다",
+        level: 2
+    }, {
+        id: 42,
+        verb: "sich freuen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~을 기대하다",
+        level: 3
+    }, {
+        id: 43,
+        verb: "gehen",
+        rightPreposition: Preposition.um,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~에 관한 것이다",
+        level: 2
+    }, {
+        id: 44,
+        verb: "gehören",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.aus,
+        case: "D",
+        ko: "~에 속하다",
+        level: 1
+    }, {
+        id: 45,
+        verb: "sich gewöhnen",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 익숙해지다",
+        level: 3
+    }, {
+        id: 46,
+        verb: "glauben",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~을 믿다",
+        level: 2
+    }, {
+        id: 47,
+        verb: "gratulieren",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~에게 축하하다",
+        level: 2
+    }, {
+        id: 48,
+        verb: "halten",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.aus,
+        case: "A",
+        ko: "~으로 여기다",
+        level: 3
+    }, {
+        id: 49,
+        verb: "halten",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에 대해 생각하다 / 고려하다",
+        level: 3
+    }, {
+        id: 50,
+        verb: "sich handeln",
+        rightPreposition: Preposition.um,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~에 관한 것이다",
+        level: 3
+    }, {
+        id: 51,
+        verb: "handeln",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.vor,
+        case: "D",
+        ko: "(책 등) ~에 관한 것이다",
+        level: 3
+    }, {
+        id: 52,
+        verb: "helfen",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~을 돕다",
+        level: 1
+    }, {
+        id: 53,
+        verb: "hindern",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "~하는 것을 막다",
+        level: 4
+    }, {
+        id: 54,
+        verb: "hoffen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~을 바라다",
+        level: 2
+    }, {
+        id: 55,
+        verb: "hören",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~로부터 소식을 듣다",
+        level: 2,
+    },
+    {
+        id: 56,
+        verb: "sich informieren",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~에 대해 알아보다",
+        level: 2,
+    },
+    {
+        id: 57,
+        verb: "sich interessen",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~에 관심 있다",
+        level: 2,
+    },
+    {
+        id: 58,
+        verb: "klagen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.vor,
+        case: "A",
+        ko: "~에 대해 불평하다",
+        level: 3,
+    },
+    {
+        id: 59,
+        verb: "kämpfen",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.aus,
+        case: "A",
+        ko: "~을 위해 싸우다",
+        level: 3,
+    },
+    {
+        id: 60,
+        verb: "kommen",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에 오다 / 참석하다",
+        level: 1,
+    },
+    {
+        id: 61,
+        verb: "sich konzentrieren",
+rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~에 집중하다",
+        level: 3,
+    },
+    {
+        id: 62,
+        verb: "sich kümmern",
+        rightPreposition: Preposition.um,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "(일, 문제) ~을 돌보다",
+        level: 2,
+    },
+    {
+        id: 63,
+        verb: "lachen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "(농담) ~을 비웃다",
+        level: 2,
+    },
+    {
+        id: 64,
+        verb: "leiden",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.vor,
+        case: "D",
+        ko: "~으로 고통받다",
+        level: 3,
+    },
+    {
+        id: 65,
+        verb: "leiden",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.aus,
+        case: "A",
+        ko: "~의 결과로 고통받다",
+        level: 4,
+    },
+    {
+        id: 66,
+        verb: "nachdenken",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 대해 생각하다",
+        level: 3,
+    },
+    {
+        id: 67,
+        verb: "protestieren",
+        rightPreposition: Preposition.gegen,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~에 항의하다",
+        level: 4,
+    },
+    {
+        id: 68,
+        verb: "rechnen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~을 예상하다 / 기대하다",
+        level: 3,
+    },
+    {
+        id: 69,
+        verb: "reden",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~에 대해 이야기하다",
+        level: 2,
+    },
+    {
+        id: 70,
+        verb: "reden",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.vor,
+        case: "D",
+        ko: "~에 대해 이야기하다",
+        level: 2,
+    },
+    {
+        id: 71,
+        verb: "riechen",
+        rightPreposition: Preposition.nach,
+        wrongPreposition: Preposition.aus,
+        case: "D",
+        ko: "~와 같은 냄새가 나다",
+        level: 2,
+    },
+    {
+        id: 72,
+        verb: "sagen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 대해 말하다",
+        level: 2,
+    },
+    {
+        id: 73,
+        verb: "sagen",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에 대해 생각하다 / 말하다 / 판단하다",
+        level: 3,
+    },
+    {
+        id: 74,
+        verb: "schicken",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "~에게 (물건을) 보내다",
+        level: 1,
+    },
+    {
+        id: 75,
+        verb: "schicken",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에게 (사람을) 보내다",
+        level: 1,
+    },
+    {
+        id: 76,
+        verb: "schimpfen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~에 대해 불평하다",
+        level: 3,
+    },
+    {
+        id: 77,
+        verb: "schmecken",
+        rightPreposition: Preposition.nach,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~와 같은 맛이 나다",
+        level: 2,
+    },
+    {
+        id: 78,
+        verb: "schreiben",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.gegen,
+        case: "A",
+        ko: "~에게 편지를 쓰다",
+        level: 1,
+    },
+    {
+        id: 79,
+        verb: "schützen",
+        rightPreposition: Preposition.vor,
+        wrongPreposition: Preposition.aus,
+        case: "D",
+        ko: "~로부터 보호하다",
+        level: 2,
+    },
+    {
+        id: 80,
+        verb: "sein",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 찬성하다",
+        level: 1,
+    },
+    {
+        id: 81,
+        verb: "sein",
+        rightPreposition: Preposition.gegen,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~에 반대하다",
+        level: 2,
+    },
+    {
+        id: 82,
+        verb: "sorgen",
+        rightPreposition: Preposition.fuer,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~을 돌보다 / 책임지다",
+        level: 2,
+    },
+    {
+        id: 83,
+        verb: "sprechen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "~와 이야기하다",
+        level: 1,
+    },
+    {
+        id: 84,
+        verb: "sprechen",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 대해 이야기하다",
+        level: 2,
+    },
+    {
+        id: 85,
+        verb: "sterben",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~으로 죽다",
+        level: 3,
+    },
+    {
+        id: 86,
+        verb: "streiten",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~와 싸우다",
+        level: 2,
+    },
+    {
+        id: 87,
+        verb: "streiten",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.vor,
+        case: "A",
+        ko: "~에 대해 싸우다",
+        level: 3,
+    },
+    {
+        id: 88,
+        verb: "teilnehmen",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에 참가하다",
+        level: 2,
+    },
+    {
+        id: 89,
+        verb: "telefonieren",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "~에게 전화하다",
+        level: 1,
+    },
+    {
+        id: 90,
+        verb: "sich treffen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~와 만나다",
+        level: 1,
+    },
+    {
+        id: 91,
+        verb: "sich treffen",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "(정상회담, 스포츠 경기) ~에서 만나다",
+        level: 2,
+    },
+    {
+        id: 92,
+        verb: "überreden",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~을 설득하여 ~하게 하다",
+        level: 3,
+    },
+    {
+        id: 93,
+        verb: "sich unterhalten",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~와 대화하다",
+        level: 2,
+    },
+    {
+        id: 94,
+        verb: "sich unterhalten",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 대해 대화하다",
+        level: 3,
+    },
+    {
+        id: 95,
+        verb: "sich verabreden",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~와 만날 약속을 하다",
+        level: 2,
+    },
+    {
+        id: 96,
+        verb: "sich verabschieden",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에게 작별 인사를 하다",
+        level: 1,
+    },
+    {
+        id: 97,
+        verb: "vergleichen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~와 비교하다",
+        level: 3,
+    },
+    {
+        id: 98,
+        verb: "sich verlassen",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "(사람/사물) ~을 믿다 / 의지하다",
+        level: 2,
+    },
+    {
+        id: 99,
+        verb: "sich verlieben",
+        rightPreposition: Preposition. in,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~와 사랑에 빠지다",
+        level: 2,
+    },
+    {
+        id: 100,
+        verb: "sich verstehen",
+        rightPreposition: Preposition.mit,
+        wrongPreposition: Preposition.auf,
+        case: "D",
+        ko: "~와 잘 지내다",
+        level: 1,
+    },
+    {
+        id: 101,
+        verb: "verstehen",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.bei,
+        case: "D",
+        ko: "~에 대해 알다",
+        level: 3,
+    },
+    {
+        id: 102,
+        verb: "sich vorbereiten",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~을 준비하다",
+        level: 2,
+    },
+    {
+        id: 103,
+        verb: "warnen",
+        rightPreposition: Preposition.vor,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~에 대해 경고하다",
+        level: 3,
+    },
+    {
+        id: 104,
+        verb: "warten",
+        rightPreposition: Preposition.auf,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~을 기다리다",
+        level: 1,
+    },
+    {
+        id: 105,
+        verb: "sich wenden",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.mit,
+        case: "A",
+        ko: "~에게 향하다 / 문의하다",
+        level: 2,
+    },
+    {
+        id: 106,
+        verb: "werden",
+        rightPreposition: Preposition.zu,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "~이 되다",
+        level: 2,
+    },
+    {
+        id: 107,
+        verb: "wissen",
+        rightPreposition: Preposition.von,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~에 대해 알다",
+        level: 3,
+    },
+    {
+        id: 108,
+        verb: "sich wundern",
+        rightPreposition: Preposition.ueber,
+        wrongPreposition: Preposition.an,
+        case: "A",
+        ko: "~에 대해 궁금해하다",
+        level: 3,
+    },
+    {
+        id: 109,
+        verb: "zuschauen",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.mit,
+        case: "D",
+        ko: "~을 구경하다",
+        level: 2,
+    },
+    {
+        id: 110,
+        verb: "zusehen",
+        rightPreposition: Preposition.bei,
+        wrongPreposition: Preposition.an,
+        case: "D",
+        ko: "(무언가를 하면서) ~을 보다",
+        level: 3,
+    },
+    {
+        id: 111,
+        verb: "zweifeln",
+        rightPreposition: Preposition.an,
+        wrongPreposition: Preposition.bei,
+        case: "A",
+        ko: "~에 대해 의심하다",
+        level: 4,
     }
+];
 
-    return {verb, preposition, case: caseType, english};
-});
-
-export default VERB_LIST;
+export default verbs;
