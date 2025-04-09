@@ -256,7 +256,7 @@ class Shooter extends Phaser.Scene {
         });
 
         // Check if the score has reached 6000 and we haven't already started the transition
-        if (this.score >= 3000 && !this.starBaseApproaching) {
+        if (this.score >= 4000 && !this.starBaseApproaching) {
             this.starBaseApproaching = true;
             this.bgMusic.stop(); // Optionally stop the current music
             this.stopPowerupSpawner();
