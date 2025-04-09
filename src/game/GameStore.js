@@ -1,6 +1,8 @@
 import verbs from "../data/verblist";
 import RESOURCES from "../data/resources"
 
+const VERBS = verbs
+
 export const GameStore = {
     userName: {
         surname: "John",
@@ -8,11 +10,11 @@ export const GameStore = {
     },
     shield: 10,
     resources: RESOURCES,
-    verbs: verbs,
+    verbs: VERBS,
     score: 2000,
     currentVerb: verbs[104],
-    matchedVerbs: [],
-    unmatchedVerbs: [],
+    unusedVerbs: VERBS,
+    usedVerbs: [],
     credits: 400,
     listeners: [],
     isGameOver: false,

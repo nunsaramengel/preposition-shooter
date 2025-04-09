@@ -23,7 +23,30 @@ class Shooter extends Phaser.Scene {
         this.shipExplosionSound = null;
         this.isGameOverSequence = false;
         this.starBaseApproaching = false;
-        this.currentVerb = GameStore.currentVerb// Flag to prevent multiple scene switches
+
+        // currentVerb, usedVerbs, unusedVerbs
+        this.isVerbSet = false;
+        this.currentVerb = GameStore.currentVerb 
+        this.usedVerbs = GameStore.usedVerbs
+        this.unusedVerbs = GameStore.unusedVerbs
+        this.setCurrentVerb = (verb) => {
+            const newVerb = verb;
+            console.log("this.usedVerbs", this.usedVerbs)
+            this.usedVerbs.push(this.currentVerb)
+            GameStore.update({ usedVerbs: this.usedVerbs })
+            GameStore.update({ currentVerb: newVerb })
+            this.currentVerb = newVerb
+            /*
+            const newUnusedVerbsArray = this.unusedVerbs.splice(this.currentVerb.id, 1);
+            GameStore.update({ unusedVerbs: newUnusedVerbsArray })
+            this.unusedVerbs = newUnusedVerbsArray
+            console.log("GameStore.unusedVerbs: ", GameStore.unusedVerbs, "\nthis.unusedVerbs: ", this.unusedVerbs)
+            */
+            
+        }
+
+        
+        // Flag to prevent multiple scene switches
         this.level = GameStore.level
 
         this.setLevel = (amount) => {
@@ -65,6 +88,8 @@ class Shooter extends Phaser.Scene {
             GameStore.update({ score: newScore });
             this.score = newScore;
         };
+
+
 
         this.explosionSound = new Howl({ src: ['audio/explosion.mp3'], volume: 1.0, onload: () => console.log('Explosion sound loaded'), onloaderror: (id, error) => console.error('Error loading explosion sound:', error) });
         this.laserSound = new Howl({ src: ['audio/laser.mp3'], volume: 1.0, onload: () => console.log('Laser sound loaded'), onloaderror: (id, error) => console.error('Error loading laser sound:', error) });
@@ -255,6 +280,12 @@ class Shooter extends Phaser.Scene {
             }
         });
 
+
+        if (this.score >= 3000 && this.currentVerb) {
+            if (!this.isVerbSet) {
+                this.setCurrentVerb(GameStore.verbs[27])
+            } else this.isVerbSet = true;
+        }
         // Check if the score has reached 6000 and we haven't already started the transition
         if (this.score >= 4000 && !this.starBaseApproaching) {
             this.starBaseApproaching = true;
@@ -265,11 +296,11 @@ class Shooter extends Phaser.Scene {
             const centerX = this.cameras.main.width / 2;
             const centerY = this.cameras.main.height / 2;
             const levelUpText = this.add.text(centerX, centerY, '레벨업!', { font: '80px yoon-px-pixman', fill: 'violet', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
-            this.time.delayedCall(3000, () => {levelUpText.destroy()}, [], this)
+            this.time.delayedCall(2500, () => {levelUpText.destroy()}, [], this)
             this.setLevel(1)
             this.levelUpSound.play()
             // Optionally stop spawning power-ups
-            this.time.delayedCall(6000, () => {
+            this.time.delayedCall(3500, () => {
                 this.scene.start('ApproachingStarBaseMonitor');
             }, [], this)
         }

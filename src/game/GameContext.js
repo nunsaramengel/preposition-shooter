@@ -2,6 +2,8 @@ import {createContext} from 'react'
 import verbs from '../data/verblist';
 import RESOURCES from "../data/resources"
 
+const VERBS = verbs
+
 const data = {
     userName: {
         surname: "John",
@@ -9,11 +11,11 @@ const data = {
     },
     shield: 10,
     resources: RESOURCES,
-    verbs: verbs,
+    verbs: VERBS,
     score: 2000,
     currentVerb: verbs[104],
-    matchedVerbs: [],
-    unmatchedVerbs: [],
+    unusedVerbs: VERBS,
+    usedVerbs: [],
     credits: 400,
     listeners: [],
     update: () => {},
