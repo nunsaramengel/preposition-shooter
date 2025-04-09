@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { preloadAssets } from "../preload";
 import { Howl } from "howler";
 
-class ApproachingStarBaseMonitor extends Phaser.Scene{
+class ApproachingStarBaseMonitor extends Phaser.Scene {
     constructor() {
         super({ key: 'ApproachingStarBaseMonitor' })
         this.fullText = `
@@ -33,14 +33,14 @@ class ApproachingStarBaseMonitor extends Phaser.Scene{
 
 
 
-    create() {        
+    create() {
         this.textDisplay = this.add.text(100, 100, this.currentText, { fontSize: "20px", fill: '#fff' });
         this.transmissionSound.play();
         this.soundPlaying = true;
 
         this.starbaseApproachingSound = new Howl({
             src: ['audio/starbase_approaching.mp3'],
-            volume: 0.2
+            volume: 0.1
         })
 
         this.typewriterTimer = this.time.addEvent({
@@ -54,7 +54,7 @@ class ApproachingStarBaseMonitor extends Phaser.Scene{
         }, [], this)
     }
 
-  
+
 
     update() {
         this.starbaseApproachingSound.play()

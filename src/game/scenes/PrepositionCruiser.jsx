@@ -92,6 +92,8 @@ class PrepositionCruiser extends Phaser.Scene {
         
         this.physics.add.overlap(this.counterLaser, this.ship, this.hitShip, null, this);
 
+  
+
     }
 
     update() {
@@ -135,7 +137,11 @@ class PrepositionCruiser extends Phaser.Scene {
 
         if (this.starbase.y < 200 ) {
             this.starbase.setVelocityY(50)
-        } 
+        } else if (this.starbase.y < 250) {
+            this.starbase.setVelocityY(0)
+        }
+
+        
     }
 
      startGameOverSequence() {

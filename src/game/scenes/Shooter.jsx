@@ -262,6 +262,10 @@ class Shooter extends Phaser.Scene {
             this.stopPowerupSpawner();
             this.stopPrepositionSpawner();
             this.isSpawningAsteroids = false;
+            const centerX = this.cameras.main.width / 2;
+            const centerY = this.cameras.main.height / 2;
+            const levelUpText = this.add.text(centerX, centerY, '레벨업!', { font: '80px yoon-px-pixman', fill: 'violet', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
+            this.time.delayedCall(3000, () => {levelUpText.destroy()}, [], this)
             this.setLevel(1)
             this.levelUpSound.play()
             // Optionally stop spawning power-ups
