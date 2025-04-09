@@ -8,20 +8,39 @@ class Shooter extends Phaser.Scene {
         super({ key: 'Shooter' });
         this.powerupTimer = null;
         this.powerups = null;
-        this.powerupImages = ['alu', 'eisen', 'gold', 'plastik', 'shield', 'titan'];
+        this.powerupImages = ['gold', 'lithium', 'plasma', 'titanium', 'iron', 'shield'];
         this.resourceMap = {
-            'alu': { key: 'resources', id: 1, amount: 5 },     // Aluminium
-            'eisen': { key: 'resources', id: 7, amount: 3 },   // Eisen
-            'gold': { key: 'resources', id: 0, amount: 10 },  // Gold
-            'plastik': { key: 'resources', id: 12, amount: 2 }, // Plastik
-            'shield': { key: 'shield', amount: 5 },           // Shield
-            'titan': { key: 'resources', id: 2, amount: 7 }    // Titan
+            'gold': { key: 'resources', id: 0, amount: 9 },  // Gold
+            'lithium': { key: 'resources', id: 1, amount: 7 },     // Aluminium
+            'plasma': { key: 'resources', id: 2, amount: 4 }, // Plastik
+            'titanium': { key: 'resources', id: 3, amount: 8 },    // Titan
+            'iron': { key: 'resources', id: 4, amount: 6 },   // Eisen
+            'shield': { key: 'shield', amount: 4 },        // Shield
         };
         this.MAX_SHIELD = 10; // Define the maximum shield value
-        this.failureDrumSound = null; // To hold the Howl sound for sadness
+        this.hopeLossSound = null; // To hold the Howl sound for sadness
         this.gameOverSound = null;
         this.shipExplosionSound = null;
         this.isGameOverSequence = false;
+        this.starBaseApproaching = false;
+        this.currentVerb = GameStore.currentVerb// Flag to prevent multiple scene switches
+        this.level = GameStore.level
+
+        this.setLevel = (amount) => {
+            const newLevel = this.level + amount;
+            GameStore.update({ level: newLevel });
+            this.level = newLevel;
+        };
+
+        // for the right or wrong preposition dropping:
+
+        this.prepositionGroup = null;
+        this.prepositionSpawnTimer = null;
+        this.PREPOSITION_SPAWN_INTERVAL = Phaser.Math.Between(2000, 5000); // Anpassen nach Bedarf
+        this.PREPOSITION_SPEED = 200; // Geschwindigkeit an Powerups anpassen
+        this.PREPOSITION_OVAL_COLOR = 0x328E6E; // Maigrün als Hex-Code
+        this.PREPOSITION_COLORS = []
+        this.PREPOSITION_TEXT_STYLE = { font: '20px Arial', fill: '#000000', align: 'center' };
     }
 
     preload() {
@@ -31,12 +50,15 @@ class Shooter extends Phaser.Scene {
     create() {
         this.score = GameStore.score;
         this.shield = GameStore.shield;
+        this.VERB_LIST = GameStore.verbs
         this.laserSpeedUpdate = GameStore.laserSpeedUpdate;
         this.reduceShield = () => {
             const newShieldValue = Math.max(0, this.shield - 1);
             GameStore.update({ shield: newShieldValue });
             this.shield = newShieldValue;
         };
+
+        this.isSpawningAsteroids = true
 
         this.setScore = (amount) => {
             const newScore = Math.max(0, this.score + amount);
@@ -49,24 +71,13 @@ class Shooter extends Phaser.Scene {
         this.bgMusic = new Howl({ src: ['audio/horizon_of_the_unknown.mp3'], volume: 1.0, onload: () => { console.log('Howl sound loaded'); this.bgMusic.play(); }, onloaderror: (id, error) => console.error('Error loading howl sound:', error) });
         this.hitSound = new Howl({ src: ['audio/hit.wav'], volume: 1.0, onload: () => console.log("hit sound loaded"), onloaderror: (id, error) => console.error('Error loading howl sound:', error) });
         this.powerupSound = new Howl({ src: ['audio/powerup.wav'], volume: 0.5, onload: () => console.log("powerup sound loaded"), onloaderror: (id, error) => console.error('Error loading howl sound:', error) });
-        this.failureDrumSound = new Howl({ // Initialize the sad sound using Howler
-            src: ['audio/failure_drum.mp3'],
-            volume: 1,
-            onload: () => console.log('Failure drum sound loaded'),
-            onloaderror: (id, error) => console.error('Error loading failure drum sound:', error)
-        });
-        this.gameOverSound = new Howl({
-            src: ['audio/8bit_synth_defeat.wav'],
-            volume: 1,
-            onload: () => console.log('Game Over 8bit synth defeat Sound loaded'),
-            onloaderror: (id, error) => console.error('Error loading sound: ', error, " id: ", id)
-        });
-        this.shipExplosionSound = new Howl({
-            src: ['audio/shipExplosion.wav'],
-            volume: 1,
-            onload: () => console.log('Ship explosion sound loaded'),
-            onloaderror: (id, error) => console.error('Error loading ship explosion sound:', error)
-        });
+        this.hopeLossSound = new Howl({ src: ['audio/hope_loss.mp3'], });
+        this.gameOverSound = new Howl({ src: ['audio/8bit_synth_defeat.wav'], });
+        this.shipExplosionSound = new Howl({ src: ['audio/shipExplosion.wav'], volume: 1, });
+        this.levelUpSound = new Howl({ src: ['audio/level_up.wav'] })
+        this.pickUpPowerUpSound = new Howl({ src: ['audio/pickup_powerup.wav'] })
+        this.pickedRightPrepositionSound = new Howl({ src: ['audio/right_preposition.mp3'] })
+        this.pickedWrongPrepositionSound = new Howl({ src: ['audio/wrong_preposition.mp3'] })
 
        
 
@@ -75,7 +86,7 @@ class Shooter extends Phaser.Scene {
         this.LASER_SCALE = 0.15;
         this.SHIP_SCALE = 0.19;
         this.ASTEROID_ROTATION_SPEED = 500;
-        this.ONE_ASTEROID_PER_MS = 1200;
+        this.ONE_ASTEROID_PER_MS = 1800;
         this.ASTEROID_MIN_SPEED = 200;
         this.ASTEROID_MAX_SPEED = 400;
         this.asteroidImages = ['asteroid1', 'asteroid2', 'asteroid3', 'asteroid4', 'asteroid5'];
@@ -98,6 +109,11 @@ class Shooter extends Phaser.Scene {
 
         // Start spawning power-ups randomly
         this.startPowerupSpawner();
+
+        //präpositions dropping
+        this.prepositionGroup = this.physics.add.group();
+        this.startPrepositionSpawner();
+        this.physics.add.overlap(this.ship, this.prepositionGroup, this.handlePrepositionCollision, null, this);
     }
 
     startPowerupSpawner() {
@@ -152,7 +168,61 @@ class Shooter extends Phaser.Scene {
         }
     }
 
+        // prepositions dropping
+    startPrepositionSpawner() {
+        this.prepositionSpawnTimer = this.time.addEvent({
+            delay: this.PREPOSITION_SPAWN_INTERVAL,
+            callback: this.spawnPreposition,
+            callbackScope: this,
+            loop: true
+        });
+    }
+
+    stopPrepositionSpawner() {
+        if (this.prepositionSpawnTimer) {
+            this.prepositionSpawnTimer.destroy();
+            this.prepositionSpawnTimer = null;
+        }
+    }
+
+    spawnPreposition() {
+        if (!this.currentVerb) {
+            return; // Verhindert Fehler, wenn currentVerb noch nicht geladen ist
+        }
+
+        const possiblePrepositions = [this.currentVerb.wrongPreposition, this.currentVerb.rightPreposition];
+        const randomPreposition = Phaser.Math.RND.pick(possiblePrepositions);
+        const x = Phaser.Math.Between(50, 750);
+        const y = -50; // Starte oberhalb des Bildschirms
+
+        const oval = this.add.graphics({ fillStyle: { color: this.PREPOSITION_OVAL_COLOR } });
+        oval.fillEllipse(0, 0, 80, 30); // Oval erstellen
+
+        const text = this.add.text(0, 0, randomPreposition, this.PREPOSITION_TEXT_STYLE).setOrigin(0.5);
+
+        const container = this.add.container(x, y, [oval, text]);
+        this.prepositionGroup.add(container);
+        this.physics.world.enable(container); // Aktiviere die Physik für den Container
+        container.body.setVelocityY(this.PREPOSITION_SPEED); // Weise die vertikale Geschwindigkeit zu
+
+        console.log(container);
+    }
+
+    handlePrepositionCollision(ship, prepositionContainer) {
+        const prepositionText = prepositionContainer.getAt(1).text; // Text ist das zweite Element im Container
+        prepositionContainer.destroy();
+
+        if (prepositionText === this.currentVerb.rightPreposition) {
+            this.pickedRightPrepositionSound.play()
+            this.setScore(200);
+        } else if (prepositionText === this.currentVerb.wrongPreposition) {
+            this.pickedWrongPrepositionSound.play()
+            this.setScore(-200);
+        }
+    }
+
     update() {
+
         this.ship.setVelocityX(this.shipVelocityX);
         if (this.cursors.left.isDown) { this.ship.setVelocityX(this.SHIP_VELOCITY * -1); } else if (this.cursors.right.isDown) { this.ship.setVelocityX(this.SHIP_VELOCITY); } else { this.ship.setVelocityX(this.shipVelocityX); }
         this.lasers.children.iterate((laser) => { if (laser && laser.y < 0) { laser.destroy(); } });
@@ -172,19 +242,42 @@ class Shooter extends Phaser.Scene {
                     const newScore = Math.max(0, GameStore.score - 500);
                     GameStore.update({ score: newScore }); // Reduce score, but not below 0
                     this.score = newScore; // Update local score
-                    this.failureDrumSound.play(); // Play the sad sound
+                    this.hopeLossSound.play(); // Play the sad sound
                     asteroid.destroy(); // Destroy the asteroid
                 }
             }
         });
 
         this.powerups.children.iterate((powerup) => { if (powerup && powerup.y > 650) { powerup.destroy(); } }); // Destroy power-ups that go off-screen
+        this.prepositionGroup.children.iterate((preposition) => {
+            if (preposition && preposition.y > 650) {
+                preposition.destroy();
+            }
+        });
+
+        // Check if the score has reached 6000 and we haven't already started the transition
+        if (this.score >= 3000 && !this.starBaseApproaching) {
+            this.starBaseApproaching = true;
+            this.bgMusic.stop(); // Optionally stop the current music
+            this.stopPowerupSpawner();
+            this.stopPrepositionSpawner();
+            this.isSpawningAsteroids = false;
+            this.setLevel(1)
+            this.levelUpSound.play()
+            // Optionally stop spawning power-ups
+            this.time.delayedCall(6000, () => {
+                this.scene.start('ApproachingStarBaseMonitor');
+            }, [], this)
+        }
+
         if (this.shield <= 0 && !this.isGameOverSequence) {
             this.startGameOverSequence();
         }
         if (this.score <= 0 && !this.isGameOverSequence) {
             this.startGameOverSequence();
         }
+
+        // prepositions dropping
     }
 
     startGameOverSequence() {
@@ -225,33 +318,37 @@ class Shooter extends Phaser.Scene {
     }
 
     spawnAsteroid() {
-        const MIN_DISTANCE = 50;
-        let x, y;
-        let isValidPosition = false;
-        while (!isValidPosition) {
-            x = Phaser.Math.Between(0, 800);
-            y = 0;
-            isValidPosition = true;
-            this.asteroids.children.iterate((existingAsteroid) => {
-                const distance = Phaser.Math.Distance.Between(x, y, existingAsteroid.x, existingAsteroid.y);
-                if (distance < MIN_DISTANCE) {
-                    isValidPosition = false;
-                }
-            });
-        }
-        const randomAsteroidImage = this.asteroidImages[Phaser.Math.Between(0, this.asteroidImages.length - 1)];
-        const asteroid = this.asteroids.create(x, y, randomAsteroidImage);
-        asteroid.setScale(0.47);
-        asteroid.originalScale = asteroid.scale;
-        const randomSpeed = Phaser.Math.Between(this.ASTEROID_MIN_SPEED, this.ASTEROID_MAX_SPEED);
-        asteroid.setVelocityY(randomSpeed);
-        const randomRotationSpeed = Phaser.Math.Between(this.ASTEROID_ROTATION_SPEED * -1, this.ASTEROID_ROTATION_SPEED);
-        asteroid.setAngularVelocity(randomRotationSpeed);
-        asteroid.scaleDirection = Math.random() < 0.5 ? 1 : -1;
+        if (this.isSpawningAsteroids) {
+            const MIN_DISTANCE = 50;
+            let x, y;
+            let isValidPosition = false;
+            while (!isValidPosition) {
+                x = Phaser.Math.Between(0, 800);
+                y = 0;
+                isValidPosition = true;
+                this.asteroids.children.iterate((existingAsteroid) => {
+                    const distance = Phaser.Math.Distance.Between(x, y, existingAsteroid.x, existingAsteroid.y);
+                    if (distance < MIN_DISTANCE) {
+                        isValidPosition = false;
+                    }
+                });
+            }
+            const randomAsteroidImage = this.asteroidImages[Phaser.Math.Between(0, this.asteroidImages.length - 1)];
+            const asteroid = this.asteroids.create(x, y, randomAsteroidImage);
+            asteroid.setScale(0.47);
+            asteroid.originalScale = asteroid.scale;
+            const randomSpeed = Phaser.Math.Between(this.ASTEROID_MIN_SPEED, this.ASTEROID_MAX_SPEED);
+            asteroid.setVelocityY(randomSpeed);
+            const randomRotationSpeed = Phaser.Math.Between(this.ASTEROID_ROTATION_SPEED * -1, this.ASTEROID_ROTATION_SPEED);
+            asteroid.setAngularVelocity(randomRotationSpeed);
+            asteroid.scaleDirection = Math.random() < 0.5 ? 1 : -1;
+    
+            // Füge den Trefferzähler und Flacker-Status hinzu
+            asteroid.hits = 0;
+            asteroid.isFlickering = false;
+            
 
-        // Füge den Trefferzähler und Flacker-Status hinzu
-        asteroid.hits = 0;
-        asteroid.isFlickering = false;
+        } else return
     }
 
     shootLasers() {
@@ -326,6 +423,8 @@ class Shooter extends Phaser.Scene {
         }
     }
 
+    
+
     hitShip(ship, asteroid) {
         if (!this.isGameOverSequence) {
             this.flickerShip();
@@ -337,6 +436,8 @@ class Shooter extends Phaser.Scene {
             }
         }
     }
+
+    
 
     flickerShip() {
         if (this.isFlickering || this.isGameOverSequence) return;
@@ -360,6 +461,9 @@ class Shooter extends Phaser.Scene {
         this.gameOverSound.play();
         this.scene.start('GameOver');
     }
+
+
+
 }
 
 export default Shooter;

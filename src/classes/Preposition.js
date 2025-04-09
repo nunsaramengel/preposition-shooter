@@ -12,8 +12,9 @@ class Preposition {
         this.zu = "zu";
         this.nach = "nach";
         this.gegen = "gegen";
-        this.vor = "vor";
         this. in = "in";
+        this.vor = "vor";
+        this.gegenueber = "gegenüber";
     }
 }
 

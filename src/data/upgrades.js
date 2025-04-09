@@ -4,7 +4,7 @@ const upgrades = [{
         requiredLevel: 1,
         cost: {
             gold: 5,
-            aluminium: 5,
+            lithium: 5,
             titanium: 15,
             iron: 5,
             plastic: 10,

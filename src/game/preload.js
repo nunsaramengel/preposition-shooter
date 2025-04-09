@@ -19,12 +19,15 @@ export function preloadAssets(scene) {
         frameHeight: 64
     });
 
-
-    scene.load.image('alu', 'img/powerups/alu.png')
-    scene.load.image('eisen', 'img/powerups/eisen.png')
+    // powerups
     scene.load.image('gold', 'img/powerups/gold.png')
-    scene.load.image('plastik', 'img/powerups/plastik.png')
+    scene.load.image('lithium', 'img/powerups/lithium.png')
+    scene.load.image('plasma', 'img/powerups/plasma.png')
+    scene.load.image('titanium', 'img/powerups/titanium.png')
+    scene.load.image('iron', 'img/powerups/iron.png')
     scene.load.image('shield', 'img/powerups/shield.png')
+
+    // starbase
     scene.load.image('starbase', 'img/starbase.svg')
 
     // AUDIO
@@ -34,8 +37,14 @@ export function preloadAssets(scene) {
     scene.load.audio('hitSound', 'audio/hit.wav')
     scene.load.audio('powerupSound', 'audio/powerup.wav')
     scene.load.audio('gameoverSound', 'audio/8bit_synth_defeat.wav')
-    scene.load.audio('failureDrumSound', 'audio/failure_drum.mp3')
+    scene.load.audio('hopeLossSound', 'audio/hope_loss.mp3')
     scene.load.audio('shipExplosionSound', 'audio/shipExplosion.wav')
     scene.load.audio('consoleClick', 'audio/console_click.wav')
     scene.load.audio('beepSound', 'audio/beep.wav')
+    scene.load.audio('levelUpSound', 'audio/level_up.wav')
+    scene.load.audio('pickedRightPrepositionSound', 'audio/right_preposition.mp3')
+    scene.load.audio('pickedWrongPrepositionSound', 'audio/wrong_preposition.mp3')
+    scene.load.audio('starbaseApproachingSound', 'audio/starbase_approaching.mp3')
+
+
 }

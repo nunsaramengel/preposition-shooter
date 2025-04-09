@@ -1,5 +1,3 @@
-import Preposition from "./Preposition"
-
 class Verb {
     constructor(verb) {
         this.verb = verb.verb;

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { preloadAssets } from "../preload";
+import { Howl } from "howler";
 
 class ApproachingStarBaseMonitor extends Phaser.Scene{
     constructor() {
@@ -22,6 +23,7 @@ class ApproachingStarBaseMonitor extends Phaser.Scene{
             loop: false // Set loop to true initially
         });
         this.soundPlaying = false;
+        
 
     }
 
@@ -29,10 +31,17 @@ class ApproachingStarBaseMonitor extends Phaser.Scene{
         preloadAssets(this)
     }
 
+
+
     create() {        
         this.textDisplay = this.add.text(100, 100, this.currentText, { fontSize: "20px", fill: '#fff' });
         this.transmissionSound.play();
         this.soundPlaying = true;
+
+        this.starbaseApproachingSound = new Howl({
+            src: ['audio/starbase_approaching.mp3'],
+            volume: 0.2
+        })
 
         this.typewriterTimer = this.time.addEvent({
             delay: this.typingSpeed,
@@ -45,7 +54,10 @@ class ApproachingStarBaseMonitor extends Phaser.Scene{
         }, [], this)
     }
 
+  
+
     update() {
+        this.starbaseApproachingSound.play()
         if (this.charIndex >= this.fullText.length && this.typewriterTimer) {
             this.typewriterTimer.destroy();
             this.typewriterTimer = null; // Clear the timer reference
