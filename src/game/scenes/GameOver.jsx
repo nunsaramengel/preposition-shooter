@@ -6,13 +6,24 @@ class GameOver extends Phaser.Scene {
     }
 
     create() {
+
+        this.cameras.main.setAlpha(0);
+
+        // Starte Fade In der neuen Szene
+        this.tweens.add({
+            targets: this.cameras.main,
+            alpha: 1,
+            duration: 800, // Dauer des Fade In in ms
+            ease: 'Linear' // Optional: Easing-Funktion
+        });
+
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
 
         this.add.text(centerX, centerY - 100, 'GAME OVER', { fontSize: '50px', fill: '#fff' }).setOrigin(0.5);
 
         // Erstelle den Button als Text-Objekt
-        const restartButton = this.add.text(centerX, centerY + 50, '재시작', { fontSize: '32px', fill: '#fff', backgroundColor: '#444', padding: { x: 20, y: 10 } })
+        const restartButton = this.add.text(centerX, centerY + 50, '재시작', { fontSize: '32px', fill: '#fff', backgroundColor: '#2E2C2C', padding: { x: 20, y: 10 } })
             .setOrigin(0.5)
             .setInteractive() // Macht das Text-Objekt klickbar
             .on('pointerdown', () => {
@@ -20,7 +31,7 @@ class GameOver extends Phaser.Scene {
                 window.location.reload(); // Lädt die Seite neu
             })
             .on('pointerover', () => {
-                restartButton.setStyle({ fill: '#ff0', backgroundColor: '#666' }); // Ändere das Aussehen beim Überfahren
+                restartButton.setStyle({ fill: 'violet', backgroundColor: '#666' }); // Ändere das Aussehen beim Überfahren
             })
             .on('pointerout', () => {
                 restartButton.setStyle({ fill: '#fff', backgroundColor: '#444' }); // Setze das Aussehen zurück

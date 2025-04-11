@@ -18,6 +18,7 @@ export function preloadAssets(scene) {
         frameWidth: 64,
         frameHeight: 64
     });
+    scene.load.image('workshop', 'img/workshop.png')
 
     // powerups
     scene.load.image('gold', 'img/powerups/gold.png')

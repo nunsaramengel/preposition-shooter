@@ -12,7 +12,7 @@ export const GameStore = {
     resources: RESOURCES,
     verbs: VERBS,
     score: 2000,
-    currentVerb: verbs[104],
+    currentVerb: verbs[0],
     unusedVerbs: VERBS,
     usedVerbs: [],
     credits: 400,

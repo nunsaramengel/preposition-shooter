@@ -24,25 +24,24 @@ class Shooter extends Phaser.Scene {
         this.isGameOverSequence = false;
         this.starBaseApproaching = false;
 
+        this.displayAlert = (text) => {
+            const centerX = this.cameras.main.width / 2;
+            const centerY = this.cameras.main.height / 2;
+            const alertText = this.add.text(centerX, centerY, text, { font: '80px yoon-px-pixman', fill: 'violet', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
+            this.time.delayedCall(2500, () => {alertText.destroy()}, [], this)
+        }
         // currentVerb, usedVerbs, unusedVerbs
         this.isVerbSet = false;
         this.currentVerb = GameStore.currentVerb 
         this.usedVerbs = GameStore.usedVerbs
         this.unusedVerbs = GameStore.unusedVerbs
-        this.setCurrentVerb = (verb) => {
-            const newVerb = verb;
-            console.log("this.usedVerbs", this.usedVerbs)
+        this.setCurrentVerb = () => {
             this.usedVerbs.push(this.currentVerb)
             GameStore.update({ usedVerbs: this.usedVerbs })
+            
+            const newVerb = GameStore.verbs[GameStore.usedVerbs.length];
             GameStore.update({ currentVerb: newVerb })
             this.currentVerb = newVerb
-            /*
-            const newUnusedVerbsArray = this.unusedVerbs.splice(this.currentVerb.id, 1);
-            GameStore.update({ unusedVerbs: newUnusedVerbsArray })
-            this.unusedVerbs = newUnusedVerbsArray
-            console.log("GameStore.unusedVerbs: ", GameStore.unusedVerbs, "\nthis.unusedVerbs: ", this.unusedVerbs)
-            */
-            
         }
 
         
@@ -71,6 +70,17 @@ class Shooter extends Phaser.Scene {
     }
 
     create() {
+
+
+        this.cameras.main.setAlpha(0);
+
+        // Starte Fade In der neuen Szene
+        this.tweens.add({
+            targets: this.cameras.main,
+            alpha: 1,
+            duration: 800, // Dauer des Fade In in ms
+            ease: 'Linear' // Optional: Easing-Funktion
+        });
         this.score = GameStore.score;
         this.shield = GameStore.shield;
         this.VERB_LIST = GameStore.verbs
@@ -118,6 +128,7 @@ class Shooter extends Phaser.Scene {
         this.laserSpeed = 800 + this.laserSpeedUpdate;
         this.shipVelocityX = 0;
         this.stars = [];
+
         this.ship = this.physics.add.image(400, 550, 'ship').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(1);
         this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 6 });
         this.asteroids = this.physics.add.group();
@@ -221,7 +232,7 @@ class Shooter extends Phaser.Scene {
         const y = -50; // Starte oberhalb des Bildschirms
 
         const oval = this.add.graphics({ fillStyle: { color: this.PREPOSITION_OVAL_COLOR } });
-        oval.fillEllipse(0, 0, 80, 30); // Oval erstellen
+        oval.fillEllipse(0, 0, 85, 45); // Oval erstellen
 
         const text = this.add.text(0, 0, randomPreposition, this.PREPOSITION_TEXT_STYLE).setOrigin(0.5);
 
@@ -281,22 +292,21 @@ class Shooter extends Phaser.Scene {
         });
 
 
-        if (this.score >= 3000 && this.currentVerb) {
+        if (this.score >= 3500 && this.currentVerb) {
             if (!this.isVerbSet) {
-                this.setCurrentVerb(GameStore.verbs[27])
-            } else this.isVerbSet = true;
+                this.isVerbSet = true; // Set the flag BEFORE displaying the alert
+                this.setCurrentVerb()
+                this.displayAlert(`새로운미션:\n${this.currentVerb.verb}`)
+            }
         }
         // Check if the score has reached 6000 and we haven't already started the transition
-        if (this.score >= 4000 && !this.starBaseApproaching) {
+        if (this.score >= 5000 && !this.starBaseApproaching) {
             this.starBaseApproaching = true;
             this.bgMusic.stop(); // Optionally stop the current music
             this.stopPowerupSpawner();
             this.stopPrepositionSpawner();
             this.isSpawningAsteroids = false;
-            const centerX = this.cameras.main.width / 2;
-            const centerY = this.cameras.main.height / 2;
-            const levelUpText = this.add.text(centerX, centerY, '레벨업!', { font: '80px yoon-px-pixman', fill: 'violet', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
-            this.time.delayedCall(2500, () => {levelUpText.destroy()}, [], this)
+            this.displayAlert('레벨업')
             this.setLevel(1)
             this.levelUpSound.play()
             // Optionally stop spawning power-ups
@@ -496,6 +506,7 @@ class Shooter extends Phaser.Scene {
         this.gameOverSound.play();
         this.scene.start('GameOver');
     }
+
 
 
 

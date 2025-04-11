@@ -33,6 +33,15 @@ export default class MainMenu extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.setAlpha(0);
+
+        // Starte Fade In der neuen Szene
+        this.tweens.add({
+            targets: this.cameras.main,
+            alpha: 1,
+            duration: 800, // Dauer des Fade In in ms
+            ease: 'Linear' // Optional: Easing-Funktion
+        });
         this.textDisplay = this.add.text(100, 100, this.currentText, { fontSize: "20px", fill: '#fff' });
 
          this.consoleClickSound = new Howl({

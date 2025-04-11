@@ -8,6 +8,7 @@ import PrepositionCruiser from './scenes/PrepositionCruiser.jsx';
 import StarBase from './scenes/StarBase.jsx';
 import GameOver from './scenes/GameOver.jsx';
 import Test from './scenes/Test.jsx';
+import Tutorial from './scenes/Tutorial.jsx';
 import { preloadAssets } from './preload.js';
 
 export default function PhaserGame() {
@@ -23,12 +24,13 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
-        Shooter,
-        Test,
         ApproachingStarBaseMonitor,
-        PrepositionCruiser,
+        GameOver,
+        Shooter,
         StarBase,
-        GameOver
+        PrepositionCruiser,
+        Test,
+        Tutorial,
       ],
       physics: {
         default: 'arcade',
