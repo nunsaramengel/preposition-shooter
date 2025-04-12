@@ -25,10 +25,10 @@ export default function PhaserGame() {
       height: 600,
       parent: 'phaser-container',
       scene: [
+        MainMenu,
         Shooter,
         WrongAnswer,
         ApproachingStarBaseMonitor,
-        MainMenu,
         PrepositionCruiser,
         GameOver,
         Level2,
