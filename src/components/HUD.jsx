@@ -60,15 +60,18 @@ export default function HUD() {
       </div>
       <br />
       <div className="single-panel">
-      <h1 lang="ko" className="menu-h1">
-        현재 미션:
-        <br />
-        <span className="menu-span">
-          <CurrentVerb />
-        </span>
-      </h1>
+        <h1 lang="ko" className="menu-h1">
+          현재 미션:
+          <br />
+          <span className="menu-span">
+            <CurrentVerb />
+          </span>
+        </h1>
       </div>
-    </div>
+      </div>
+      <div className="upgrades-display">
+        { /* DISPLAY FOR UPGRADS LIKE SUPER SHIELD; HYPER LASER; Y-LASER, X-LASER, TURBO-DRIVE, etc. */}
+      </div>
     <div className="resources-container" style={{ position: "absolute", alignItems: "center", top: 600, paddingLeft: 60, display: "flex" }}>
       <span lang="ko" style={{ color: "white", fontSize: "19px", alignItems: "center", marginRight: "10px" }} >
         자원
