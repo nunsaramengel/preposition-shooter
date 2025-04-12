@@ -153,7 +153,10 @@ class PrepositionCruiser extends Phaser.Scene {
                                     changeSceneButton.destroy();
                                 }
                             });
-                            this.starbase.setVelocityY(80)
+                            this.starbase.setVelocityY(120)
+                            this.time.delayedCall(4000, () => {
+                                this.scene.start("WrongAnswer")
+                            }, [], this)
                         })
                         .on('pointerover', () => {
                             fadeOutButton.setStyle({ fill: '#ff0ff0' });

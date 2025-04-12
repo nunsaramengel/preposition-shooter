@@ -6,6 +6,8 @@ import ApproachingStarBaseMonitor from './scenes/ApproachingStarBaseMonitor.jsx'
 import Shooter from './scenes/Shooter.jsx';
 import PrepositionCruiser from './scenes/PrepositionCruiser.jsx';
 import StarBase from './scenes/StarBase.jsx';
+import WrongAnswer from './scenes/WrongAnswer.jsx';
+import Level2 from './scenes/Level2.jsx';
 import GameOver from './scenes/GameOver.jsx';
 import Test from './scenes/Test.jsx';
 import Tutorial from './scenes/Tutorial.jsx';
@@ -24,10 +26,12 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        Shooter,
+        WrongAnswer,
         PrepositionCruiser,
         ApproachingStarBaseMonitor,
         GameOver,
-        Shooter,
+        Level2,
         StarBase,
         Test,
         Tutorial,
