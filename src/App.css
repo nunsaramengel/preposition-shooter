@@ -5,10 +5,120 @@
     box-sizing: border-box;
 }
 
+
+.starship-panel{
+    width: 300px;
+    background-image: linear-gradient(
+        90deg, 
+        #3b073b,
+        #3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,#3b073b,
+        #430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,#430743,
+        #4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,#4c064c,
+        #560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,#560556,
+        #5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,#5d055d,
+        #660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,
+        #5b065b,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,#660566,
+        #710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,#710471,
+        #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,       #7b057b,
+        #880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,#880588,
+        #940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,#940594,
+        #a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,#a806a8,
+        #ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,#ba04ba,
+        #cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,#cc02cc,
+        #d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,#d00fd0,
+        #de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,#de1ede,
+        #e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,#e42ee4,
+        #e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,#e943e9,
+        #eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,#eb67eb,
+        #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee, #ee75ee,
+        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,        violet, violet, violet, violet, violet, violet, violet,
+        rgb(233, 135, 233),         rgb(233, 135, 233),         rgb(233, 135, 233),         rgb(233, 135, 233),         rgb(233, 135, 233),         rgb(233, 135, 233),
+        rgb(222, 154, 222),         rgb(222, 154, 222),         rgb(222, 154, 222),         rgb(222, 154, 222),         rgb(222, 154, 222),         rgb(222, 154, 222),
+        rgb(222, 154, 222),         
+        rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215), rgb(215, 171, 215),
+         rgb(211, 183, 211),  rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211), rgb(211, 183, 211),
+          rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),  rgb(219, 212, 219),
+            rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226), rgb(226 226 226),
+        rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), 
+        rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), 
+        white, white, white, white, white, white,  white, white, white, white, white, white, white, white, white, white, white, white, white,white,
+        rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245), rgb(247 245 245),
+        rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236), rgb(237, 236, 236),
+        rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230), rgb(230 230 230) , rgb(230 230 230), rgb(230 230 230), rgb(230 230 230),
+        plum,plum,plum,plum,plum,plum,plum,plum,plum,plum
+        ), linear-gradient(to bottom, white, yellow, red);
+    image-rendering: pixelated;
+}
+
+.resources-container{
+    width: 800px;
+    background: linear-gradient(-90deg,  #3b073b, black);
+    height: 48px;
+    image-rendering: pixelated;
+    
+}
+
+
+
+.resources-container div {
+        background-color: lch(0 0 0 / 0.56);
+}
+
+
 .menu-h1{
+    color: plum;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1),         0 0 10px rgba(255, 255, 255, 0.14);
+    font-size: 1rem;
+    font-weight: 100;
+    background-color: #0A2F2F; 
+    background-image: linear-gradient(to bottom right, rgba(0 0 0 / 0.18) 0%, transparent 50%),
+                    linear-gradient(to top left, rgba(255 255 255 / 0.1) 0%, transparent 50%);
+    background-size: 5px 4px;
+    background-repeat: round;
+    image-rendering: pixelated;
+    border-radius: 5px;
+    padding: 10px;    width: 96%;
+    text-align: left;
+    max-height: 100px;
+    box-shadow: inset px 10px hsla(136.07 73.68% 14.9% / 0.61);
+    
+    border-top-left-radius: 2px;
+}
+
+.menu-h1:nth-of-type(5){
     color: violet;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.1),         0 0 10px rgba(255, 255, 255, 0.14);
+    font-size: 1rem;
+    font-weight: 100;
+    background-image: linear-gradient(to bottom right, rgba(0 0 0 / 0.18) 0%, transparent 50%),
+                    linear-gradient(to top left, rgba(255 255 255 / 0.1) 0%, transparent 50%);
+    background-size: 6px 4px;
+    background-repeat: round;
+    border-radius: 5px;
+    padding: 10px;
+    width: 96%;
+    text-align: left;
+    height: 100%;
 }
+
+.single-panel{
+  padding-left: 2px;
+  padding-top: 1px;
+  padding-bottom: 3px; /* Make space for the "borders" */
+  background-image:
+    linear-gradient(to right, #9F1C9F 1px); /* F* Second "border" */
+  background-repeat: repeat;
+  background-position: 0 0, 5px 0, 10px 0; /* Position each "border" */
+  background-size: auto 100%; 
+  border-radius: 4px;
+  border-left: solid 2px darkmagenta;
+  background: linear-gradient(150deg, lch(100 0.03 277.8 / 0.44), lab(45.21 69.65 -14.64 / 0.62), lab(100 0 -0.03 / 0));
+  width: 100%;
+}
+
+
+
+
 
 body{
     background-color: black;
@@ -23,4 +133,5 @@ body{
 [lang="ko"]{
     font-family: yoon-px-pixman, sans-serif;
 }
+
 

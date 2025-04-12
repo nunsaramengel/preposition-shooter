@@ -18,7 +18,7 @@ const Shield = () => {
   });
 
   return (
-    <span style={{ lang: "de", color: "turquoise" }}>
+    <span style={{ lang: "de", color: "plum" }}>
       {squares.join('')} {/* Verbinde die Quadrate zu einem String */}
     </span>
   );

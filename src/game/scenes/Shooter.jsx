@@ -27,7 +27,7 @@ class Shooter extends Phaser.Scene {
         this.displayAlert = (text) => {
             const centerX = this.cameras.main.width / 2;
             const centerY = this.cameras.main.height / 2;
-            const alertText = this.add.text(centerX, centerY, text, { font: '80px yoon-px-pixman', fill: 'violet', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5);
+            const alertText = this.add.text(centerX, centerY, text, { font: '80px yoon-px-pixman', fill: 'violet', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5).setDepth(1000);
             this.time.delayedCall(2500, () => {alertText.destroy()}, [], this)
         }
         // currentVerb, usedVerbs, unusedVerbs
@@ -99,8 +99,6 @@ class Shooter extends Phaser.Scene {
             this.score = newScore;
         };
 
-
-
         this.explosionSound = new Howl({ src: ['audio/explosion.mp3'], volume: 1.0, onload: () => console.log('Explosion sound loaded'), onloaderror: (id, error) => console.error('Error loading explosion sound:', error) });
         this.laserSound = new Howl({ src: ['audio/laser.mp3'], volume: 1.0, onload: () => console.log('Laser sound loaded'), onloaderror: (id, error) => console.error('Error loading laser sound:', error) });
         this.bgMusic = new Howl({ src: ['audio/horizon_of_the_unknown.mp3'], volume: 1.0, onload: () => { console.log('Howl sound loaded'); this.bgMusic.play(); }, onloaderror: (id, error) => console.error('Error loading howl sound:', error) });
@@ -113,17 +111,17 @@ class Shooter extends Phaser.Scene {
         this.pickUpPowerUpSound = new Howl({ src: ['audio/pickup_powerup.wav'] })
         this.pickedRightPrepositionSound = new Howl({ src: ['audio/right_preposition.mp3'] })
         this.pickedWrongPrepositionSound = new Howl({ src: ['audio/wrong_preposition.mp3'] })
+        this.newMissionSound = new Howl ({ src: ['audio/spell.wav']})
 
-       
-
+    
         this.NUMBER_OF_STARS = 1000;
         this.SHIP_VELOCITY = 600;
         this.LASER_SCALE = 0.15;
         this.SHIP_SCALE = 0.19;
         this.ASTEROID_ROTATION_SPEED = 500;
-        this.ONE_ASTEROID_PER_MS = 1800;
-        this.ASTEROID_MIN_SPEED = 200;
-        this.ASTEROID_MAX_SPEED = 400;
+        this.ONE_ASTEROID_PER_MS = 2000;
+        this.ASTEROID_MIN_SPEED = 120;
+        this.ASTEROID_MAX_SPEED = 220;
         this.asteroidImages = ['asteroid1', 'asteroid2', 'asteroid3', 'asteroid4', 'asteroid5'];
         this.laserSpeed = 800 + this.laserSpeedUpdate;
         this.shipVelocityX = 0;
@@ -240,8 +238,6 @@ class Shooter extends Phaser.Scene {
         this.prepositionGroup.add(container);
         this.physics.world.enable(container); // Aktiviere die Physik für den Container
         container.body.setVelocityY(this.PREPOSITION_SPEED); // Weise die vertikale Geschwindigkeit zu
-
-        console.log(container);
     }
 
     handlePrepositionCollision(ship, prepositionContainer) {
@@ -297,6 +293,8 @@ class Shooter extends Phaser.Scene {
                 this.isVerbSet = true; // Set the flag BEFORE displaying the alert
                 this.setCurrentVerb()
                 this.displayAlert(`새로운미션:\n${this.currentVerb.verb}`)
+                this.newMissionSound.play()
+                this.prepositionGroup.clear(true, true);
             }
         }
         // Check if the score has reached 6000 and we haven't already started the transition
@@ -309,6 +307,9 @@ class Shooter extends Phaser.Scene {
             this.displayAlert('레벨업')
             this.setLevel(1)
             this.levelUpSound.play()
+            this.prepositionGroup.clear(true, true)
+            this.powerups.clear(true, true)
+            this.asteroids.clear(true, true)
             // Optionally stop spawning power-ups
             this.time.delayedCall(3500, () => {
                 this.scene.start('ApproachingStarBaseMonitor');
@@ -500,16 +501,11 @@ class Shooter extends Phaser.Scene {
         }, 150);
         return () => clearInterval(flickerInterval);
     };
-
     gameOver() {
         // This method is now only called via the delayed call in startGameOverSequence
         this.gameOverSound.play();
         this.scene.start('GameOver');
     }
-
-
-
-
 }
 
 export default Shooter;

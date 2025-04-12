@@ -29,7 +29,7 @@ export function preloadAssets(scene) {
     scene.load.image('shield', 'img/powerups/shield.png')
 
     // starbase
-    scene.load.image('starbase', 'img/starbase.svg')
+    scene.load.image('starbase', 'img/starbase.png')
 
     // AUDIO
     scene.load.audio('explosionSound', 'audio/explosion.mp3');
@@ -46,6 +46,7 @@ export function preloadAssets(scene) {
     scene.load.audio('pickedRightPrepositionSound', 'audio/right_preposition.mp3')
     scene.load.audio('pickedWrongPrepositionSound', 'audio/wrong_preposition.mp3')
     scene.load.audio('starbaseApproachingSound', 'audio/starbase_approaching.mp3')
+    scene.load.audio('newMissionSound', 'audio/spell.wav')
 
 
 }

@@ -24,11 +24,11 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        PrepositionCruiser,
         ApproachingStarBaseMonitor,
         GameOver,
         Shooter,
         StarBase,
-        PrepositionCruiser,
         Test,
         Tutorial,
       ],
