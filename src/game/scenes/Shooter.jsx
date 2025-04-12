@@ -116,6 +116,7 @@ class Shooter extends Phaser.Scene {
     
         this.NUMBER_OF_STARS = 1000;
         this.SHIP_VELOCITY = 600;
+        
         this.LASER_SCALE = 0.15;
         this.SHIP_SCALE = 0.19;
         this.ASTEROID_ROTATION_SPEED = 500;

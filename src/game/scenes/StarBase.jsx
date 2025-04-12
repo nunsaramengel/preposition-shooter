@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { preloadAssets } from '../preload'
+import { Howl } from 'howler'
 
 class StarBase extends Phaser.Scene {
     constructor() {
@@ -12,6 +13,8 @@ class StarBase extends Phaser.Scene {
 
     create() {
        
+        this.workshopAmbienceSound = new Howl({ src: ['audio/workshop_ambience.mp3'] })
+        this.workshopAmbienceSound.play()
          // Setze die Kamera initial auf Alpha 0 (unsichtbar)
         this.cameras.main.setAlpha(0);
 
