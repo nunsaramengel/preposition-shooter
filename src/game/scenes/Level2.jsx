@@ -24,6 +24,8 @@ class Level2 extends Phaser.Scene {
         this.isGameOverSequence = false;
         this.starBaseApproaching = false;
 
+        this.isFirstVerbInitialized = false;
+
         this.displayAlert = (text) => {
             const centerX = this.cameras.main.width / 2;
             const centerY = this.cameras.main.height / 2;
@@ -255,6 +257,13 @@ class Level2 extends Phaser.Scene {
     }
 
     update() {
+        if (!this.isFirstVerbInitialized) {
+            this.isFirstVerbInitialized = true;
+            this.setCurrentVerb()
+            this.displayAlert(`새로운미션:\n${this.currentVerb.verb}`)
+            this.newMissionSound.play()
+            this.prepositionGroup.clear(true, true);
+        }
 
         this.ship.setVelocityX(this.shipVelocityX);
         if (this.cursors.left.isDown) { this.ship.setVelocityX(this.SHIP_VELOCITY * -1); } else if (this.cursors.right.isDown) { this.ship.setVelocityX(this.SHIP_VELOCITY); } else { this.ship.setVelocityX(this.shipVelocityX); }
