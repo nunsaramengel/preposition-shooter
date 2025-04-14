@@ -16,10 +16,12 @@ class Tutorial extends Phaser.Scene {
         preloadAssets(this);
         this.load.audio('transmission7', 'audio/transmission7.mp3');
         this.arrow = this.add.image()
+
         // Stelle sicher, dass du den Sound hier lädst
     }
 
     create() {
+
         fadeIn(this)
         this.LASER_SCALE = 0.15;
 

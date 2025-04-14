@@ -21,7 +21,9 @@ class StarBase extends Phaser.Scene {
          // Setze die Kamera initial auf Alpha 0 (unsichtbar)
         this.cameras.main.setAlpha(0);
 
+        // Starte Fade In der neuen Szene
 
+        this.workshop = this.physics.add.image(0, 0, 'workshop').setOrigin(0, 0).setDepth(1).setScale(1)
     }
 }
 

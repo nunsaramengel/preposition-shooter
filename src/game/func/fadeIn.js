@@ -1,5 +1,6 @@
+import Phaser from "phaser";
 
-const fadeIn = (scene) => {
+function fadeIn(scene) {
     scene.cameras.main.setAlpha(0);
 
     scene.tweens.add({
@@ -10,4 +11,4 @@ const fadeIn = (scene) => {
     })
 }
 
-export default fadeIn
+export default fadeIn;

@@ -2,6 +2,7 @@ import GameStore from '../GameStore';
 import { preloadAssets } from "../preload.js"
 import Phaser from 'phaser'
 import { Howl } from 'howler';
+import fadeIn from '../func/fadeIn.js';
 
 class Level2 extends Phaser.Scene {
     constructor() {
@@ -74,15 +75,7 @@ class Level2 extends Phaser.Scene {
     create() {
 
 
-        this.cameras.main.setAlpha(0);
-
-        // Starte Fade In der neuen Szene
-        this.tweens.add({
-            targets: this.cameras.main,
-            alpha: 1,
-            duration: 800, // Dauer des Fade In in ms
-            ease: 'Linear' // Optional: Easing-Funktion
-        });
+        fadeIn(this)
 
 
         this.score = GameStore.score;
