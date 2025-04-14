@@ -20,6 +20,7 @@ class WrongAnswer extends Phaser.Scene{
             src: ['audio/transmission7.mp3'],
             loop: false // Set loop to true initially
         });
+
         this.soundPlaying = false; 
     }
 

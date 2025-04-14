@@ -113,10 +113,9 @@ class Shooter extends Phaser.Scene {
         this.pickedWrongPrepositionSound = new Howl({ src: ['audio/wrong_preposition.mp3'] })
         this.newMissionSound = new Howl ({ src: ['audio/spell.wav']})
 
-    
         this.NUMBER_OF_STARS = 1000;
         this.SHIP_VELOCITY = 600;
-        
+
         this.LASER_SCALE = 0.15;
         this.SHIP_SCALE = 0.19;
         this.ASTEROID_ROTATION_SPEED = 500;

@@ -26,6 +26,7 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        Tutorial,
         Shooter,
         WrongAnswer,
         ApproachingStarBaseMonitor,
@@ -34,7 +35,6 @@ export default function PhaserGame() {
         Level2,
         StarBase,
         Test,
-        Tutorial,
       ],
       physics: {
         default: 'arcade',

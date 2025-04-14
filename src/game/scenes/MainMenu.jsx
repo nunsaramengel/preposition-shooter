@@ -80,6 +80,21 @@ export default class MainMenu extends Phaser.Scene {
             .on('pointerout', () => {
                 startGameButton.setStyle({ fill: '#12F1D3' });
             });
+        
+        const startTutorialButton = this.add.text(100, 385, '튜토리얼 시작', { fontSize: '20px', fill: '#12F1D3' })
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.beepSound.play()
+                this.transmissionSound.stop()
+                this.scene.start('Tutorial');
+            })
+            .on('pointerover', () => {
+                startTutorialButton.setStyle({ fill: '#ff0ff0' });
+                this.consoleClickSound.play()
+            })
+            .on('pointerout', () => {
+                startTutorialButton.setStyle({ fill: '#12F1D3' });
+            });
     }
 
     update() {

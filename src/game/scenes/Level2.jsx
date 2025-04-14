@@ -83,6 +83,8 @@ class Level2 extends Phaser.Scene {
             duration: 800, // Dauer des Fade In in ms
             ease: 'Linear' // Optional: Easing-Funktion
         });
+
+
         this.score = GameStore.score;
         this.shield = GameStore.shield;
         this.VERB_LIST = GameStore.verbs

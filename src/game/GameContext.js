@@ -5,10 +5,7 @@ import RESOURCES from "../data/resources"
 const VERBS = verbs
 
 const data = {
-    userName: {
-        surname: "John",
-        familyName: "Doe"
-    },
+    userName: "",
     shield: 10,
     resources: RESOURCES,
     verbs: VERBS,
@@ -28,7 +25,27 @@ const data = {
         starbase: false,
         gameover: false
     },
-    level: 1
+    level: 1,
+    sceneConfig: {
+        shieldMaximum: 10,
+        prepositionSpeed: 200,
+        prepositionOvalColor: 0x328e6e,
+        prepositionTextStyle: {
+            font: '20px Arial',
+            fill: '#000000',
+            align: 'center'
+        },
+        numberOfStars: 1000,
+        shipVelocity: 600,
+        laserScale: 0.19,
+        asteroidsPerMilliseconds: 2000,
+        asteroidSpeed: {
+            min: 120,
+            max: 220
+        },
+        laserSpeedAddends: 800
+    }
+
 };
 
 const GameContext = createContext(data)

@@ -31,6 +31,20 @@ export function preloadAssets(scene) {
     // starbase
     scene.load.image('starbase', 'img/starbase.png')
 
+    // earth
+    scene.load.image('earth', 'img/earth.png')
+
+    // keyboard keys
+    scene.load.image('spaceBarKey', 'img/spaceBar.png')
+    scene.load.image('arrow', 'img/arrow.png')
+    scene.load.image('arrowL', 'img/arrowL.png')
+    scene.load.image('arrowLM', "img/arrowLMagenta.png")
+    scene.load.image('arrowRM', "img/arrowRMagenta.png")
+    scene.load.image('spaceBarM', "img/spaceBarMagenta.png")
+    scene.load.image('pointingArrowRightMagenta', "img/pointingArrowRightMagenta.png")
+    scene.load.image('arrowBLM', "img/arrowBottomLeftMagenta.png")
+
+
     // AUDIO
     scene.load.audio('explosionSound', 'audio/explosion.mp3');
     scene.load.audio('laserSound', 'audio/laser.mp3');
