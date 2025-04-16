@@ -1,5 +1,8 @@
 import Phaser from "phaser";
 import { preloadAssets } from "../preload";
+import GameStore from "../GameStore";
+import fadeIn from "../func/fadeIn";
+import { Howl } from "howler";
 
 class Test extends Phaser.Scene{
     constructor() {
@@ -9,33 +12,62 @@ class Test extends Phaser.Scene{
 
     preload() {
         preloadAssets(this)
+        this.ringMenuOpenCloseSound = new Howl({src: ["audio/ringMenuOpenClose.wav"]})
     }
 
     create() {
-        const startX = this.cameras.main.width / 2;
-        const startY = -50;
-        this.rechteck = this.add.rectangle(startX, startY, 120, 60, 0xff0000)
 
-        this.physics.add.existing(this.rechteck);
+        fadeIn(this)
+        // RING MENU
+        this.input.keyboard.on('keydown-Z', this.openRingMenu, this);
+        this.workshop = this.physics.add.image(0, 0, 'workshop').setOrigin(0, 0).setDepth(1).setScale(1)
 
-        this.rechteck.body.setVelocityY(100)
-
-        const labelText = "über"
-        const style = { font: '30px Arial', fill: '#000', align: "center" };
-        this.label = this.add.text(this.rechteck.x, this.rechteck.y, labelText, style)
-
-
-        this.label.setOrigin(0.5)
     }
+
+    openRingMenu() {
+        this.scene.pause('Test');
+        this.sound.play('whip')
+        this.scene.launch('RingMenu', {
+            items: GameStore.menuItems,
+            callback: this.handleMenuSelection, // Funktion, die bei Auswahl ausgeführt wird
+            parentSceneKey: 'Tutorial' // Key der aufrufenden Szene
+        });
+        GameStore.update({isRingMenuOpen: true})
+        console.log("openRingMenu... isRingMenuOpen: ", GameStore.isRingMenuOpen)            
+    }
+
+    handleMenuSelection(selectedItem) {
+        // Hier die Logik für die ausgewählte Menüaktion implementieren
+        switch (selectedItem.label) {
+            case '플라스마빔':
+                console.log('플라스마빔 wurde benutzt!', selectedItem.cost);
+                break;
+            case '파워업플러스':
+                console.log('파워업플러스 wurde benutzt!');
+                break;
+            case '플라스마쉴드':
+                console.log('플라스마방어막 wurde benutzt!');
+                break;
+            case '터보엔진':
+                console.log('터보 엔진 wurde benutzt!');
+                break;
+            case 'Y레이저빔':
+                console.log('Y레이저빔 wurde benutzt!');
+                break;
+        }
+
+        /*checkAffordable = (selectedItem) => {
+           selectedItem.cost.map(selectedItemResource => )
+        } */
+    }
+
+
+
+
 
     update() {
 
-        this.label.x = this.rechteck.x;
-        this.label.y = this.rechteck.y;
-
-        if (this.rechteck.y > this.cameras.main.height + this.rechteck.height / 2) {
-            console.log("Recht ist aus dem Bildschirm gefallen.")
-        }
+       
     }
 }
 

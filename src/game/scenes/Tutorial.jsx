@@ -164,10 +164,10 @@ class Tutorial extends Phaser.Scene {
         }, [], this)
         // ship
         this.SHIP_VELOCITY = 600;
-        this.SHIP_SCALE = 0.19;
+        this.SHIP_SCALE = GameStore.shipScale;
         this.shipVelocityX = 0;
         this.laserSpeed = 800 + this.laserSpeedUpdate;
-        this.ship = this.physics.add.image(400, 550, 'ship').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(1);
+        this.ship = this.physics.add.image(400, 550, 'shipP').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(1);
         this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 6 });
 
         this.laserTypewriter = new TypewriterEffect(this, this.laserText, {
@@ -344,7 +344,7 @@ class Tutorial extends Phaser.Scene {
             if (leftLaser) {
                 leftLaser.setActive(true);
                 leftLaser.setVisible(true);
-                leftLaser.setPosition(this.ship.x - shipWidth / 2 + 20, this.ship.y + 10);
+                leftLaser.setPosition(this.ship.x - shipWidth / 2, this.ship.y - 10);
                 leftLaser.setScale(this.LASER_SCALE);
                 leftLaser.setVelocityY(-this.laserSpeed);
                 this.laserSound.play();
@@ -353,7 +353,7 @@ class Tutorial extends Phaser.Scene {
             if (rightLaser) {
                 rightLaser.setActive(true);
                 rightLaser.setVisible(true);
-                rightLaser.setPosition(this.ship.x + shipWidth / 2 - 20, this.ship.y + 10);
+                rightLaser.setPosition(this.ship.x + shipWidth / 2, this.ship.y - 10);
                 rightLaser.setScale(this.LASER_SCALE);
                 rightLaser.setVelocityY(-this.laserSpeed);
                 this.laserSound.play();

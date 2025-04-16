@@ -12,7 +12,7 @@ export const RESOURCES = [
         ko: "금",
         imgPath: '',
         initialValue: 0,
-        currentValue: 27,
+        currentValue: 77,
         color: '#f4d66b',
         prepositions: [prep.gegen, prep.fuer]
     },
@@ -61,8 +61,8 @@ export const RESOURCES = [
         currentValue: 0,
         color: '#639BB3',
         prepositions: [prep.zu, prep.nach, prep.auf]
-
     },
+
 ]
 
 export default RESOURCES

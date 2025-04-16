@@ -10,6 +10,7 @@ export function preloadAssets(scene) {
     scene.load.image('asteroid4', 'img/asteroid04.png');
     scene.load.image('asteroid5', 'img/asteroid05.png');
     scene.load.image('starbaseLaser', 'img/starbase_laser.svg')
+    scene.load.image('shipPixel', "img/ship_pixel.png")
     scene.load.spritesheet('explosion', 'img/explosion.png', {
         frameWidth: 64,
         frameHeight: 64
@@ -21,12 +22,16 @@ export function preloadAssets(scene) {
     scene.load.image('workshop', 'img/workshop.png')
 
     // powerups
-    scene.load.image('gold', 'img/powerups/gold.png')
-    scene.load.image('lithium', 'img/powerups/lithium.png')
-    scene.load.image('plasma', 'img/powerups/plasma.png')
-    scene.load.image('titanium', 'img/powerups/titanium.png')
-    scene.load.image('iron', 'img/powerups/iron.png')
-    scene.load.image('shield', 'img/powerups/shield.png')
+    scene.load.image('gold', 'img/powerups/pixelated/gold.png')
+    scene.load.image('lithium', 'img/powerups/pixelated/lithium.png')
+    scene.load.image('plasma', 'img/powerups/pixelated/plasma.png')
+    scene.load.image('titanium', 'img/powerups/pixelated/titanium.png')
+    scene.load.image('iron', 'img/powerups/pixelated/iron.png')
+    scene.load.image('shield', 'img/powerups/pixelated/shield.png')
+
+    // new ship
+    scene.load.image("shipP", "img/shipPix.png")
+
 
     // starbase
     scene.load.image('starbase', 'img/starbase.png')
@@ -44,6 +49,14 @@ export function preloadAssets(scene) {
     scene.load.image('pointingArrowRightMagenta', "img/pointingArrowRightMagenta.png")
     scene.load.image('arrowBLM', "img/arrowBottomLeftMagenta.png")
 
+    // RING MENU
+    scene.load.image('plasmaBeam', 'img/ringMenu/plasmaBeam.png')
+    scene.load.image('powerupPlus', "img/ringMenu/powerupPlus.png")
+    scene.load.image('plasmaShields', "img/ringMenu/shields.png")
+    scene.load.image('turbo', "img/ringMenu/turbo.png")
+    scene.load.image('yLaser', "img/ringMenu/yLaser.png")
+    scene.load.image('ringMenuBG', "img/ringMenu/ringMenuBG.png")
+    scene.load.image('nebula', 'img/nebula.png')
 
     // AUDIO
     scene.load.audio('explosionSound', 'audio/explosion.mp3');
@@ -61,6 +74,9 @@ export function preloadAssets(scene) {
     scene.load.audio('pickedWrongPrepositionSound', 'audio/wrong_preposition.mp3')
     scene.load.audio('starbaseApproachingSound', 'audio/starbase_approaching.mp3')
     scene.load.audio('newMissionSound', 'audio/spell.wav')
+    scene.load.audio('whip', 'audio/whip.mp3')
+    scene.load.audio('woosh', "audio/woosh.wav")
+    scene.load.audio('error', 'audio/error.mp3')
 
 
 }

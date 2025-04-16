@@ -3,6 +3,7 @@ import { preloadAssets } from "../preload.js"
 import Phaser from 'phaser'
 import { Howl } from 'howler';
 import fadeIn from '../func/fadeIn.js';
+import Notification from '../func/Notification.js';
 
 class Level2 extends Phaser.Scene {
     constructor() {
@@ -76,7 +77,7 @@ class Level2 extends Phaser.Scene {
 
 
         fadeIn(this)
-
+        this.nebularBG = this.add.tileSprite( 400, 300, 800, 600, 'nebula')
 
         this.score = GameStore.score;
         this.shield = GameStore.shield;
@@ -115,7 +116,7 @@ class Level2 extends Phaser.Scene {
         this.SHIP_VELOCITY = 600;
         
         this.LASER_SCALE = 0.15;
-        this.SHIP_SCALE = 0.19;
+        this.SHIP_SCALE = GameStore.shipScale;
         this.ASTEROID_ROTATION_SPEED = 500;
         this.ONE_ASTEROID_PER_MS = 2000;
         this.ASTEROID_MIN_SPEED = 120;
@@ -125,7 +126,7 @@ class Level2 extends Phaser.Scene {
         this.shipVelocityX = 0;
         this.stars = [];
 
-        this.ship = this.physics.add.image(400, 550, 'ship').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(1);
+        this.ship = this.physics.add.image(400, 550, 'shipP').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(1);
         this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 6 });
         this.asteroids = this.physics.add.group();
         this.powerups = this.physics.add.group();
@@ -171,7 +172,7 @@ class Level2 extends Phaser.Scene {
 
         const randomPowerupImage = this.powerupImages[Phaser.Math.Between(0, this.powerupImages.length - 1)];
         const powerup = this.powerups.create(x, y, randomPowerupImage);
-        powerup.setScale(0.3); // Adjust scale as needed
+        powerup.setScale(GameStore.POWERUP_SCALE); // Adjust scale as needed
         powerup.setVelocityY(Phaser.Math.Between(this.ASTEROID_MIN_SPEED, this.ASTEROID_MAX_SPEED)); // Match asteroid speed
     }
 
@@ -188,13 +189,21 @@ class Level2 extends Phaser.Scene {
                     currentResources[resourceIndex].currentValue += powerupData.amount;
                     GameStore.update({ resources: currentResources });
                     console.log(`Collected ${powerupKey}, increased resource ${powerupData.id} by ${powerupData.amount}`);
+                    const newNotificationText = `${powerupData.amount} ${GameStore.resources[powerupData.id].ko} 획득!`
+                    const newNotification = new Notification(this, newNotificationText);
+                    newNotification.display()
+                    console.log("opwerupData.id: ", powerupData.id)
+
+
                 }
             } else if (powerupData.key === 'shield') {
                 // Calculate the new shield value, ensuring it doesn't exceed MAX_SHIELD
                 const newShield = Math.min(this.MAX_SHIELD, GameStore.shield + powerupData.amount);
                 GameStore.update({ shield: newShield });
                 this.shield = newShield; // Update local shield
-                console.log(`Collected ${powerupKey}, increased shield by ${powerupData.amount}`);
+                const newNotificationText = `쉴드가 ${powerupData.amount} 증가했습니다!`
+                const newNotification = new Notification(this, newNotificationText);
+                newNotification.display()
             }
             powerup.destroy();
         }
@@ -247,11 +256,17 @@ class Level2 extends Phaser.Scene {
             this.setScore(200);
         } else if (prepositionText === this.currentVerb.wrongPreposition) {
             this.pickedWrongPrepositionSound.play()
-            this.setScore(-200);
+            this.setScore(-500);
         }
     }
 
     update() {
+
+
+        this.nebularBG.setScale(2)
+        this.nebularBG.setAlpha(0.5)
+        this.nebularBG.tilePositionY -= 0.01;
+
         if (!this.isFirstVerbInitialized) {
             this.isFirstVerbInitialized = true;
             this.setCurrentVerb()
@@ -313,7 +328,6 @@ class Level2 extends Phaser.Scene {
             this.setLevel(1)
             this.levelUpSound.play()
             this.prepositionGroup.clear(true, true)
-            this.powerups.clear(true, true)
             this.asteroids.clear(true, true)
             // Optionally stop spawning power-ups
             this.time.delayedCall(3500, () => {
@@ -409,7 +423,7 @@ class Level2 extends Phaser.Scene {
             if (leftLaser) {
                 leftLaser.setActive(true);
                 leftLaser.setVisible(true);
-                leftLaser.setPosition(this.ship.x - shipWidth / 2 + 20, this.ship.y + 10);
+                leftLaser.setPosition(this.ship.x - shipWidth / 2, this.ship.y - 10);
                 leftLaser.setScale(this.LASER_SCALE);
                 leftLaser.setVelocityY(-this.laserSpeed);
                 this.laserSound.play();
@@ -418,7 +432,7 @@ class Level2 extends Phaser.Scene {
             if (rightLaser) {
                 rightLaser.setActive(true);
                 rightLaser.setVisible(true);
-                rightLaser.setPosition(this.ship.x + shipWidth / 2 - 20, this.ship.y + 10);
+                rightLaser.setPosition(this.ship.x + shipWidth / 2, this.ship.y - 10);
                 rightLaser.setScale(this.LASER_SCALE);
                 rightLaser.setVelocityY(-this.laserSpeed);
                 this.laserSound.play();

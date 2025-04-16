@@ -1,10 +1,17 @@
 import {createContext} from 'react'
 import verbs from '../data/verblist';
 import RESOURCES from "../data/resources"
+import menuItems from '../data/menuItems';
 
 const VERBS = verbs
 
+
 const data = {
+    POWERUP_SCALE: 4,
+    isRingMenuOpen: false,
+    selectedUpgrade: undefined,
+    shipScale: 0.12,
+    menuItems: menuItems,
     userName: "",
     shield: 10,
     resources: RESOURCES,
@@ -18,13 +25,7 @@ const data = {
     update: () => {},
     isGameOver: false,
     laserSpeedUpdate: 0,
-    currentScene: {
-        nameinput: true,
-        mainmenu: false,
-        shooter: false,
-        starbase: false,
-        gameover: false
-    },
+    currentScene: "",
     level: 1,
     sceneConfig: {
         shieldMaximum: 10,

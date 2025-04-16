@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { preloadAssets } from "../preload";
 import GameStore from "../GameStore";
 import Preposition from "../../classes/Preposition"
+import Notification from "../func/Notification";
 
 class PrepositionCruiser extends Phaser.Scene {
     constructor() {
@@ -48,11 +49,11 @@ class PrepositionCruiser extends Phaser.Scene {
         this.NUMBER_OF_STARS = 1000;
         this.SHIP_VELOCITY = 600;
         this.LASER_SCALE = 0.15;
-        this.SHIP_SCALE = 0.19;
+        this.SHIP_SCALE = GameStore.shipScale;
         this.laserSpeed = 1100;
         this.shipVelocityX = 0;
         this.stars = [];
-        this.ship = this.physics.add.image(400, 550, 'ship').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(0); // Set ship's depth higher initially
+        this.ship = this.physics.add.image(400, 550, 'shipP').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(0); // Set ship's depth higher initially
         this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 10 });
         this.cursors = this.input.keyboard.createCursorKeys();
         this.input.keyboard.on('keydown-SPACE', this.shootLasers, this);
@@ -140,6 +141,11 @@ class PrepositionCruiser extends Phaser.Scene {
                         .on('pointerdown', () => {
                             this.beepSound.play()
                             this.questionAsked = false;
+                            const failureNotification = new Notification(this, "틀렸습니다. 안녕히 계십시오.")
+                            this.time.delayedCall(700, () => { 
+                                failureNotification.display()
+                                this.sound.play('pickedWrongPrepositionSound')
+                            }, [], this)
                             this.tweens.add({
                                 targets: [backgroundRect, koreanText, germanText, koreanTranslationText, fadeOutButton, changeSceneButton],
                                 alpha: 0,
@@ -241,7 +247,7 @@ class PrepositionCruiser extends Phaser.Scene {
             },
             onComplete: () => {
                 this.ship.clearMask();
-                this.scene.start('StarBase');
+                this.scene.start('Workshop');
             },
             callbackScope: this
         });

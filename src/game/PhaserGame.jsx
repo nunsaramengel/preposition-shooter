@@ -4,6 +4,7 @@ import NameInput from './scenes/NameInput.jsx';
 import MainMenu from './scenes/MainMenu.jsx';
 import ApproachingStarBaseMonitor from './scenes/ApproachingStarBaseMonitor.jsx';
 import Shooter from './scenes/Shooter.jsx';
+import OnboardComputer from './scenes/OnboardComputer.jsx';
 import PrepositionCruiser from './scenes/PrepositionCruiser.jsx';
 import StarBase from './scenes/StarBase.jsx';
 import WrongAnswer from './scenes/WrongAnswer.jsx';
@@ -11,6 +12,8 @@ import Level2 from './scenes/Level2.jsx';
 import GameOver from './scenes/GameOver.jsx';
 import Test from './scenes/Test.jsx';
 import Tutorial from './scenes/Tutorial.jsx';
+import RingMenu from './scenes/RingMenu.jsx';
+import Workshop from './scenes/Workshop.jsx';
 import { preloadAssets } from './preload.js';
 
 export default function PhaserGame() {
@@ -26,15 +29,18 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        Workshop,
+        PrepositionCruiser,
+        Shooter,
+        OnboardComputer,
+        Test,
+        Tutorial,
         StarBase,
         WrongAnswer,
-        Tutorial,
-        Shooter,
+        RingMenu,
         ApproachingStarBaseMonitor,
-        PrepositionCruiser,
         GameOver,
         Level2,
-        Test,
       ],
       physics: {
         default: 'arcade',

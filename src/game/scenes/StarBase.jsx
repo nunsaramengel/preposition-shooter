@@ -2,10 +2,12 @@ import Phaser from 'phaser'
 import { preloadAssets } from '../preload'
 import { Howl } from 'howler'
 import fadeIn from '../func/fadeIn'
+import GameStore from "../GameStore";
 
 class StarBase extends Phaser.Scene {
     constructor() {
-        super({key: 'StarBase'})
+        super({ key: 'StarBase' })
+
     }
 
     preload() {
@@ -19,7 +21,6 @@ class StarBase extends Phaser.Scene {
         this.workshopAmbienceSound = new Howl({ src: ['audio/workshop_ambience.mp3'], volume: 0.5 })
         this.workshopAmbienceSound.play()
          // Setze die Kamera initial auf Alpha 0 (unsichtbar)
-        this.cameras.main.setAlpha(0);
 
         // Starte Fade In der neuen Szene
 

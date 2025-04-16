@@ -1,9 +1,15 @@
 import verbs from "../data/verblist";
 import RESOURCES from "../data/resources"
+import menuItems from "../data/menuItems";
 
 const VERBS = verbs
 
 export const GameStore = {
+    POWERUP_SCALE: 4,
+    isRingMenuOpen: false,
+    selectedUpgrade: undefined,
+    shipScale: 0.12,
+    menuItems: menuItems,
     userName: "",
     shield: 10,
     resources: RESOURCES,
@@ -16,13 +22,7 @@ export const GameStore = {
     listeners: [],
     isGameOver: false,
     laserSpeedUpdate: 0,
-    currentScene: {
-        nameinput: true,
-        mainmenu: false,
-        shooter: false,
-        starbase: false,
-        gameover: false
-    },
+    currentScene: "",
     update(data) {
         Object.assign(this, data);
         this.listeners.forEach((fn) => fn(this));
