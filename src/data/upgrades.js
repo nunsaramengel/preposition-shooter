@@ -1,8 +1,8 @@
 const upgrades = [
     {
+        label: "플라스마빔",
         id: 0,
         name: "plasmaBeam",
-        label: "플라스마빔",
         requiredLevel: 1,
         cost: {
             gold: 100,
@@ -10,14 +10,15 @@ const upgrades = [
             plasma: 160,
             titanium: 55,
             iron: 35,
-            credits: 6000,
+            credits: 6000
         },
         acquired: false,
+        affordable: false
     },
     {
         id: 1,
-        name: "powerUpPlus",
         label: "파워업플러스",
+        name: "powerUpPlus",
         requiredLevel: 1,
         cost: {
             gold: 200,
@@ -25,14 +26,15 @@ const upgrades = [
             plasma: 40,
             titanium: 100,
             iron: 85,
-            credits: 10000,
+            credits: 10000
         },
         acquired: false,
+        affordable: false
     },
     {
         id: 2,
-        name: "plasmaShields",
         label: "플라스마쉴드",
+        name: "plasmaShields",
         requiredLevel: 1,
         cost: {
             gold: 45,
@@ -43,36 +45,38 @@ const upgrades = [
             credits: 7000
         },
         acquired: false,
+        affordable: false
     },
     {
         id: 3,
-        name: "turbo",
         label: "터보엔진",
+        name: "turbo",
         requiredLevel: 1,
         cost: {
-            gold: 65,
-            lithium: 150,
-            plasma: 30,
-            titanium: 95,
-            iron: 90,
-            credits: 4500,
+            gold: 6,
+            lithium: 10,
+            plasma: 10,
+            titanium: 1,
+            iron: 10,
+            credits: 50
         },
         acquired: false,
-    },
-    {
+        affordable: false
+    }, {
         id: 4,
-        name: "yLaser",
         label: "Y레이저빔",
+        name: "yLaser",
         requiredLevel: 1,
         cost: {
-            gold: 130,
-            lithium: 80,
-            plasma: 200,
-            titanium: 150,
-            iron: 140,
-            credits: 9000,
+            gold: 10,
+            lithium: 8,
+            plasma: 2,
+            titanium: 1,
+            iron: 1,
+            credits: 9
         },
         acquired: false,
+        affordable: false
     },
 ]
 
@@ -92,4 +96,39 @@ const upgrades = [
 12 Turbo (y)
 13 Telporter (rechts links teleportieren am Rand rechts rein, am Rand links raus u umgekehrt)
 */
+
+export const resourceMap = {
+    'gold': {
+        key: 'resources',
+        id: 0,
+        amount: 9
+    }, // Gold
+    'lithium': {
+        key: 'resources',
+        id: 1,
+        amount: 7
+    }, // Aluminium
+    'plasma': {
+        key: 'resources',
+        id: 2,
+        amount: 4
+    }, // Plastik
+    'titanium': {
+        key: 'resources',
+        id: 3,
+        amount: 8
+    }, // Titan
+    'iron': {
+        key: 'resources',
+        id: 4,
+        amount: 6
+    }, // Eisen
+    'shield': {
+        key: 'shield',
+        id: 5,
+        amount: 4
+    }, // Shield
+};
+
+
 export default upgrades;

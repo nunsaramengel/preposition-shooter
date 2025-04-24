@@ -3,6 +3,7 @@ export function preloadAssets(scene) {
     // IMAGES
     scene.load.image('ship', 'img/ship.png');
     scene.load.image('laser', 'img/laser.png');
+    scene.load.image('plasmaLaser', 'img/laserBeam.png')
     scene.load.image('asteroid', 'img/asteroid.png');
     scene.load.image('asteroid1', 'img/asteroid01.png');
     scene.load.image('asteroid2', 'img/asteroid02.png');
@@ -11,7 +12,9 @@ export function preloadAssets(scene) {
     scene.load.image('asteroid5', 'img/asteroid05.png');
     scene.load.image('starbaseLaser', 'img/starbase_laser.svg')
     scene.load.image('shipPixel', "img/ship_pixel.png")
-    scene.load.spritesheet('explosion', 'img/explosion.png', {
+
+    /'/animated sprites '
+scene.load.spritesheet('explosion', 'img/explosion.png', {
         frameWidth: 64,
         frameHeight: 64
     });
@@ -19,7 +22,14 @@ export function preloadAssets(scene) {
         frameWidth: 64,
         frameHeight: 64
     });
+
+    // scenes
+    // workshop
     scene.load.image('workshop', 'img/workshop.png')
+    // starbase
+    scene.load.image('starbase3Doors', "img/starbase_3_doors.jpg")
+    scene.load.image('madra', "img/madra.png")
+    scene.load.image('dialogueBox', "img/dialogue.png")
 
     // powerups
     scene.load.image('gold', 'img/powerups/pixelated/gold.png')
@@ -77,6 +87,7 @@ export function preloadAssets(scene) {
     scene.load.audio('whip', 'audio/whip.mp3')
     scene.load.audio('woosh', "audio/woosh.wav")
     scene.load.audio('error', 'audio/error.mp3')
+    scene.load.audio('ringMenuOpenCloseSound', "audio/ringMenuOpenClose.wav")
 
 
 }

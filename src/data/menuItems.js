@@ -1,4 +1,5 @@
 import upgrades from "./upgrades";
+
 const UPGRADES = upgrades
 
 const menuItems = [
@@ -25,8 +26,8 @@ const menuItems = [
 
     },
     {
-        label: "플라스마쉴드",
         name: "plasmaShields",
+        label: "플라스마쉴드",
         icon: 'img/ringMenu/shields.png',
         key: "2",
         cost: UPGRADES[2].cost,
@@ -36,8 +37,8 @@ const menuItems = [
 
     },
     {
-        label: "터보엔진",
         name: "turbo",
+        label: "터보엔진",
         icon: 'img/ringMenu/turbo.png',
         key: "3",
         cost: UPGRADES[3].cost,

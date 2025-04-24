@@ -1,4 +1,4 @@
-import { Howl } from "howler";
+import {Howl} from "howler";
 
 class TypewriterEffect {
     constructor(scene, fullText, config = {}) {
@@ -15,7 +15,7 @@ class TypewriterEffect {
         this.charIndex = 0;
         this.typewriterTimer = null;
         this.onCompleteCallback = config.onComplete;
-        this.transmissionSound = new Howl({ src: ['audio/transmission7.mp3'], loop: false });
+        this.transmissionSound = new Howl({src: ['audio/transmission7.mp3'], loop: false});
         this.soundPlaying = false;
         this.startTime = 0; // Add a variable to store the start time
     }
@@ -27,19 +27,14 @@ class TypewriterEffect {
             this.transmissionSound.play();
             this.soundPlaying = true;
         }
-        this.typewriterTimer = this.scene.time.addEvent({
-            delay: this.typingSpeed,
-            callback: this.typeNextChar,
-            callbackScope: this,
-            loop: true
-        })
+        this.typewriterTimer = this.scene.time.addEvent({delay: this.typingSpeed, callback: this.typeNextChar, callbackScope: this, loop: true})
     }
 
     typeNextChar() {
         if (this.charIndex < this.fullText.length) {
             this.currentText += this.fullText[this.charIndex];
             this.textDisplay.setText(this.currentText);
-            this.charIndex++;
+            this.charIndex ++;
         } else {
             this.stop();
             const endTime = this.scene.time.now; // Record the end time

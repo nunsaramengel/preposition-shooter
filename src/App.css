@@ -55,13 +55,14 @@
     background: linear-gradient(-90deg,  #3b073b, black);
     height: 48px;
     image-rendering: pixelated;
-    
 }
 
 
 
 .resources-container div {
         background-color: lch(0 0 0 / 0.56);
+        border-top: solid 1px lab(16.11 0 -0.01);
+        border-bottom: solid 1px lab(16.11 0 -0.01);
 }
 
 
@@ -77,13 +78,15 @@
     background-repeat: round;
     image-rendering: pixelated;
     border-radius: 5px;
-    padding: 10px;    width: 96%;
+    padding: 10px;    
+    width: 96%;
     text-align: left;
-    max-height: 100px;
     box-shadow: inset px 10px hsla(136.07 73.68% 14.9% / 0.61);
-    
+    height: 70px;
     border-top-left-radius: 2px;
 }
+
+
 
 .menu-h1:nth-of-type(5){
     color: violet;
@@ -96,9 +99,16 @@
     background-repeat: round;
     border-radius: 5px;
     padding: 10px;
-    width: 96%;
-    text-align: left;
-    height: 100%;
+    width: 90%;
+    height: 200px
+}
+
+.menu-current-verb{
+    height: 190px;
+}
+
+.single-panel:nth-last-of-type(1){
+    height: 194px;
 }
 
 .single-panel{
@@ -114,10 +124,9 @@
   border-left: solid 2px darkmagenta;
   background: linear-gradient(150deg, lch(100 0.03 277.8 / 0.44), lab(45.21 69.65 -14.64 / 0.62), lab(100 0 -0.03 / 0));
   width: 100%;
+  height: 74px;
+
 }
-
-
-
 
 
 body{
@@ -166,4 +175,31 @@ body{
     text-shadow: -2px -2px 4px black;
     font-size: 20px;
     width: 20px;
+}
+
+.not-affordable-notification{
+    position: absolute;
+    width: 220px;
+    top: 548px;
+    left: 550px;
+    padding: 0;
+    background-color: magenta;
+
+}
+
+.not-affordable-notification span{
+        color: white !important;
+}
+
+.affordable-notification{
+    position: absolute;
+    width: 240px;
+    top: 549px;
+    left: 550px;
+    padding: 0;
+    background-color: turquoise;
+}
+
+.affordable-notification span{
+    color: black;
 }

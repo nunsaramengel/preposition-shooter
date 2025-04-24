@@ -59,16 +59,16 @@ export default function HUD() {
             레벨:
             <br />
             <span className="menu-span">
-              {String(game.level)}
+              {game.level}
             </span>
           </h1>
         </div>
         <br />
         <div className="single-panel">
-          <h1 lang="ko" className="menu-h1">
+          <h1 lang="ko" className="menu-h1 menu-current-verb">
             현재 미션:
             <br />
-            <span className="menu-span">
+            <span className="menu-span current-verb">
               <CurrentVerb />
             </span>
           </h1>
@@ -81,7 +81,12 @@ export default function HUD() {
       
       }
 
-
+      <div className='not-affordable-notification'>
+        {game.isRingMenuOpen && game.selectedUpgrade && !game.selectedUpgrade.data.affordable && <span lang="ko">자원이나 크레딧이 부족합니다.</span>}
+      </div>
+      <div className="affordable-notification">
+        {game.isRingMenuOpen && game.selectedUpgrade && game.selectedUpgrade.data.affordable && <span lang="ko">구매하시려면 ENTER를 누르세요.</span> }
+      </div>
       <div>
         <div className="cost-panel">
         {game.isRingMenuOpen && game.selectedUpgrade &&
@@ -110,6 +115,7 @@ export default function HUD() {
               <div className="single-resource-square-label-div" lang="ko" style={{width: "17px", height: "17px", fontSize: "13px", backgroundColor: "white"}}>크</div>
               <span className="credits-cost single-resource-value-span" lang="ko" style={{color: `${game.credits >= game.selectedUpgrade.data.cost.credits ? `${RESOURCE_VALUE_COLOR.isEnough}`: `${RESOURCE_VALUE_COLOR.isNotEnough}` }`}}>{JSON.stringify(game.selectedUpgrade.data.cost.credits)}</span>
             </div>
+            
           </>
         }
         </div>

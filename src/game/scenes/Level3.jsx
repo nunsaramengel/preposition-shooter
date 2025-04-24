@@ -12,8 +12,6 @@ import PrepositionManager from '../../classes/PrepositionManager.js';
 class Level2 extends Phaser.Scene {
     constructor() {
         super({ key: 'Level2' });
-        this.canShoot = true; // Flag, um zu steuern, ob geschossen werden darf
-        this.shootDelay = 1; // Verzögerung in Millisekunden zwischen den Schüssen
         this.currentVerb = GameStore.currentVerb 
         this.usedVerbs = GameStore.usedVerbs
         this.unusedVerbs = GameStore.unusedVerbs
@@ -26,81 +24,81 @@ class Level2 extends Phaser.Scene {
         }
 
         this.scoreTrigger = new ScoreTrigger(this, {
-            11000: {
+            21000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            12000: {
+            22000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            12500: {
+            22500: {
                 displayAlert: '레벨업',
                 setLevel: 1,
                 levelUpSoundPlay: true,
             },
-            13000: {
+            23000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            14000: {
+            24000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            14500: {
+            24500: {
                 displayAlert: '레벨업',
                 setLevel: 1,
                 levelUpSoundPlay: true,
             },
-            15000: {
+            25000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            16000: {
+            26000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            16500: {
+            26500: {
                 displayAlert: '레벨업',
                 setLevel: 1,
                 levelUpSoundPlay: true,
             },
-            17000: {
+            27000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            18000: {
+            28000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            18500: {
+            28500: {
                 displayAlert: '레벨업',
                 setLevel: 1,
                 levelUpSoundPlay: true,
             },
-            19000: {
+            29000: {
                 setCurrentVerb: true,
                 displayAlert: () => `새로운미션:\n${this.currentVerb.verb}`, // Übergib eine Funktion
                 playNewMissionSound: true,
                 clearPrepositionGroup: true
             },
-            20000: {
+            30000: {
                 bgMusicStop: true,
                 stopPowerupSpawner: true,
                 stopPrepositionSpawner: true,
@@ -249,7 +247,7 @@ class Level2 extends Phaser.Scene {
             this,
             this.powerups,
             this.ship,
-            GameStore.resourceMap,
+            this.resourceMap,
             this.powerupImages,
             this.powerupSound,
             this.pickUpPowerUpSound
@@ -394,62 +392,32 @@ class Level2 extends Phaser.Scene {
     }
 
 shootLasers() {
-    if (this.canShoot && this.lasers.getLength() <= this.lasers.maxSize - (GameStore.sceneConfig.yLaser ? 4 : 2)) {
-        this.canShoot = false;
-
+    if (this.lasers.getLength() < this.lasers.maxSize) {
         const shipWidth = this.ship.width * this.ship.scaleX;
-        const laserKey = GameStore.sceneConfig.plasmaBeam ? 'plasmaLaser' : 'laser';
-        const scaleKey = GameStore.sceneConfig.plasmaBeam ? GameStore.sceneConfig.plasmaScale : GameStore.sceneConfig.laserScale;
-        const laserSpeed = -this.laserSpeed;
+        const laserKey = GameStore.sceneConfig.plasmaBeam ? 'plasmaLaser' : 'laser'; // Wähle die Textur basierend auf dem Upgrade
+        const scaleKey = GameStore.sceneConfig.plasmaBeam ? GameStore.sceneConfig.plasmaScale : GameStore.sceneConfig.laserScale
 
-        // Normale Laser (immer vertikal)
         const leftLaser = this.lasers.get();
         if (leftLaser) {
-            this.fireLaser(leftLaser, this.ship.x - shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
+            leftLaser.setActive(true);
+            leftLaser.setVisible(true);
+            leftLaser.setTexture(laserKey); // Setze die Textur
+            leftLaser.setPosition(this.ship.x - shipWidth / 2, this.ship.y - 10);
+            leftLaser.setScale(scaleKey); // Verwende den Skalenwert aus GameStore
+            leftLaser.setVelocityY(-this.laserSpeed);
+            this.laserSound.play();
         }
         const rightLaser = this.lasers.get();
         if (rightLaser) {
-            this.fireLaser(rightLaser, this.ship.x + shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
+            rightLaser.setActive(true);
+            rightLaser.setVisible(true);
+            rightLaser.setTexture(laserKey); // Setze die Textur
+            rightLaser.setPosition(this.ship.x + shipWidth / 2, this.ship.y - 10);
+            rightLaser.setScale(scaleKey); // Verwende den Skalenwert aus GameStore
+            rightLaser.setVelocityY(-this.laserSpeed);
+            this.laserSound.play();
         }
-
-        // Y-Laser (wenn Upgrade gekauft wurde)
-        if (GameStore.sceneConfig.yLaser) {
-            const diagonalSpeed = laserSpeed / Math.sqrt(2);
-
-            const leftDiagonalLaser = this.lasers.get();
-            if (leftDiagonalLaser) {
-                this.fireLaser(leftDiagonalLaser, this.ship.x + shipWidth, this.ship.y - 10, -diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
-            }
-
-            const rightDiagonalLaser = this.lasers.get();
-            if (rightDiagonalLaser) {
-                this.fireLaser(rightDiagonalLaser, this.ship.x - shipWidth, this.ship.y - 10, diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
-            }
-        }
-
-        this.time.delayedCall(this.shootDelay, () => {
-            this.canShoot = true;
-        }, [], this);
     }
-}
-
-fireLaser(laser, x, y, velocityX, velocityY, key, scale, forcedAngle = null) {
-    laser.setActive(true);
-    laser.setVisible(true);
-    laser.setTexture(key);
-    laser.setPosition(x, y);
-    laser.setScale(scale);
-    laser.setVelocity(velocityX, velocityY);
-
-    if (forcedAngle !== null) {
-        laser.angle = forcedAngle;
-    } else {
-        const angleRad = Math.atan2(velocityY, velocityX);
-        const angleDeg = Phaser.Math.RadToDeg(angleRad);
-        laser.angle = angleDeg + 90;
-    }
-
-    this.laserSound.play();
 }
 
   hitAsteroid(laser, asteroid) {

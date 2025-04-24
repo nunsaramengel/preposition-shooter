@@ -1,8 +1,9 @@
 import Phaser from "phaser";
 import { preloadAssets } from "../preload";
 import GameStore from "../GameStore";
-import Preposition from "../../classes/Preposition"
+import fadeIn from "../func/fadeIn";
 import Notification from "../func/Notification";
+import WebFont from "webfontloader";
 
 class PrepositionCruiser extends Phaser.Scene {
     constructor() {
@@ -23,9 +24,30 @@ class PrepositionCruiser extends Phaser.Scene {
 
     preload() {
         preloadAssets(this)
+        this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+        this.load.once('load', () => {
+            WebFont.load({
+                typekit: {
+                id: 'hrd1czj' // Deine Typekit ID
+                },
+                active: () => {
+                console.log('Adobe Fonts geladen und aktiv.');
+                // Hier kannst du Aktionen ausführen, die von den geladenen Schriftarten abhängen,
+                // oder einfach fortfahren, da Phaser jetzt die Schriftarten verwenden kann.
+                },
+                inactive: () => {
+                console.warn('Adobe Fonts konnten nicht geladen werden.');
+                // Hier kannst du eine Fallback-Schriftart laden oder eine Fehlermeldung anzeigen.
+                }
+            });
+        });
+
     }
 
     create() {
+        fadeIn(this)
+        this.nebularBG = this.add.tileSprite(400, 300, 800, 600, 'nebula')
+        
         this.beepSound = new Howl({ src: ['audio/beep.wav'] })
         this.starbaseDoorOpenSound = new Howl({ src: ['audio/starbase_door_open.wav']})
         this.consoleClickSound = new Howl({ src: ['audio/console_click.wav'], volume: 1, onload: () => console.log('Console click sound loaded'), onloaderror: (id, error) => console.error('Error loading ship explosion sound: ', error, " ## id: ", id)})
@@ -67,6 +89,11 @@ class PrepositionCruiser extends Phaser.Scene {
     }
 
     update() {
+
+        this.nebularBG.setScale(2)
+        this.nebularBG.setAlpha(0.5)
+        this.nebularBG.tilePositionY -= 0.01;
+
         this.stars.forEach((star) => { star.y += star.speed; if (star.y > 600) { star.y = 0; star.x = Phaser.Math.Between(0, 800); star.speed = Phaser.Math.Between(1, 14); } star.graphics.setPosition(star.x, star.y); });
 
         if (!this.isStarBaseHit) {
@@ -114,17 +141,17 @@ class PrepositionCruiser extends Phaser.Scene {
                 this.starbaseStopped = true;
                 this.questionAsked = true;
                 this.time.delayedCall(800, () => {
-                    const koreanFont = '20px yoon-px-pixman';
-                    const germanFont = '20px pixelify-sans';
+                    const koreanFont = 'yoon-px-pixman, Monotype, sans-serif';
+                    const germanFont = `"pixelify-sans", Monotype, sans-serif`;
                     const yPos = 30;
                     const textColor = '#12F1D3';
                     const hoverColor = '#ff0ff0';
                     const strokeColor = '#000000';
                     const strokeThickness = 4;
 
-                    const koreanText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 - 8 + yPos + 60, this.koreanPart, { font: koreanFont, fill: "#ffffff", stroke: strokeColor, strokeThickness: strokeThickness }).setOrigin(0.5, 1).setDepth(2).setAlpha(0);
-                    const germanText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + yPos + 60, this.germanPart, { font: germanFont, fill: "#ffffff", stroke: strokeColor, strokeThickness: strokeThickness }).setOrigin(0.5, 0.5).setDepth(2).setAlpha(0);
-                    const koreanTranslationText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + 8 + yPos + 60, this.koreanTranslationPart, { font: koreanFont, fill: "#ffffff", stroke: strokeColor, strokeThickness: strokeThickness }).setOrigin(0.5, 0).setDepth(2).setAlpha(0);
+                    const koreanText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 - 8 + yPos + 60, this.koreanPart, { fontFamily: koreanFont, fontSize: "20px", fill: "#ffffff", stroke: strokeColor, strokeThickness: strokeThickness }).setOrigin(0.5, 1).setDepth(2).setAlpha(0);
+                    const germanText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + yPos + 60, this.germanPart, { fontFamily: germanFont, fontSize: "20px", fill: "#ffffff", stroke: strokeColor, strokeThickness: strokeThickness }).setOrigin(0.5, 0.5).setDepth(2).setAlpha(0);
+                    const koreanTranslationText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 + 8 + yPos + 60, this.koreanTranslationPart, { fontFamily: koreanFont, fontSize: "20px", fill: "#ffffff", stroke: strokeColor, strokeThickness: strokeThickness }).setOrigin(0.5, 0).setDepth(2).setAlpha(0);
 
                     const rectWidth = Math.max(koreanText.width, germanText.width, koreanTranslationText.width) + 20;
                     const rectHeight = koreanText.height + germanText.height + koreanTranslationText.height + 20;
@@ -133,7 +160,7 @@ class PrepositionCruiser extends Phaser.Scene {
                     const backgroundRect = this.add.rectangle(rectX, rectY + yPos + 25, rectWidth, rectHeight, 0x000000, 0.7).setOrigin(0.5).setDepth(1).setAlpha(0);
                     const buttonY = rectY + rectHeight / 2 + 70;
 
-                    const fadeOutButton = this.add.text(this.cameras.main.width / 2 - 100, buttonY, 'darüber', { font: koreanFont, fill: textColor, stroke: strokeColor, strokeThickness: strokeThickness })
+                    const fadeOutButton = this.add.text(this.cameras.main.width / 2 - 100, buttonY, 'darüber', { fontFamily: koreanFont, fontSize: "20px", fill: textColor, stroke: strokeColor, strokeThickness: strokeThickness })
                         .setOrigin(0.5)
                         .setInteractive()
                         .setDepth(2)
@@ -170,7 +197,7 @@ class PrepositionCruiser extends Phaser.Scene {
                         })
                         .on('pointerout', () => { fadeOutButton.setStyle({ fill: '#12F1D3' }); });
 
-                    const changeSceneButton = this.add.text(this.cameras.main.width / 2 + 100, buttonY, 'darauf', { font: koreanFont, fill: textColor, stroke: strokeColor, strokeThickness: strokeThickness })
+                    const changeSceneButton = this.add.text(this.cameras.main.width / 2 + 100, buttonY, 'darauf', { fontFamily: koreanFont, fontSize: "20px", fill: textColor, stroke: strokeColor, strokeThickness: strokeThickness })
                         .setOrigin(0.5)
                         .setInteractive()
                         .setDepth(2)
@@ -247,7 +274,7 @@ class PrepositionCruiser extends Phaser.Scene {
             },
             onComplete: () => {
                 this.ship.clearMask();
-                this.scene.start('Workshop');
+                this.scene.start('StarBase');
             },
             callbackScope: this
         });
