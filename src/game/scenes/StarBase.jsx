@@ -30,10 +30,11 @@ class StarBase extends Phaser.Scene {
 
         this.starbase = this.physics.add.image(0, 0, 'starbase3Doors').setOrigin(0, 0).setDepth(0).setScale(0.5)
         this.madra = this.physics.add.image(-10, 250, "madra").setOrigin(0, 0).setDepth(2).setScale(0.5)
-        this.workshopEngineerSaying = this.add.text(200, 4, `
-ENTER 함선 작업실에 입장하기
+        this.workshopEngineerSaying = this.add.text(2, 0, `
+  ENTER 함선 작업실에  
+  P 동사 컴퓨터실
             `,
-            { fontSize: "18px", fontfamily: "yoon-px-pixman, sans-serif", stroke: "black", strokeThickness: 2 }
+            { fontSize: "18px", fontfamily: "yoon-px-pixman, sans-serif", stroke: "black", strokeThickness: 4, backgroundColor: "lab(0 0 0 / 0.4)" }
         ).setDepth(500)
 
         this.dialogueBox = new DialogueBox(
@@ -61,6 +62,8 @@ ENTER 함선 작업실에 입장하기
                 this.dialogueFinished = true;
                 this.enterInput = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
                 this.enterInput.on('down', this.goToWorkshop, this);
+                this.pInput = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+                this.pInput.on('down', this.goToComputerRoom, this);
 
                 this.time.delayedCall(1000, () => {
                     
@@ -103,6 +106,13 @@ ENTER 함선 작업실에 입장하기
         if (this.dialogueFinished && this.enterInput) {
             this.enterInput.off('down', this.goToWorkshop, this); // Deaktiviere den Listener
             this.scene.start('Workshop');
+        }
+    }
+
+    goToComputerRoom() {
+        if (this.dialogueBox && this.pInput) {
+            this.pInput.off("down", this.goToComputerRoom, this);
+            this.scene.start("ComputerRoom")
         }
     }
 }

@@ -18,7 +18,7 @@ export default class PowerUpManager {
         this.maxShield = GameStore.sceneConfig.shieldMaximum; // Aus deiner Shooter-Klasse
     }
 
-    startSpawner(minInterval = 3000, maxInterval = 7000) {
+    startSpawner(minInterval = 2000, maxInterval = 6000) {
         const spawnInterval = Phaser.Math.Between(minInterval, maxInterval);
         this.powerupTimer = this.scene.time.addEvent({delay: spawnInterval, callback: this.spawn, callbackScope: this, loop: true});
     }

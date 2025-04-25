@@ -16,14 +16,16 @@ const sceneConfig = {
     shipScale: 0.12,
     plasmaShield: false,
     hitsToDestroyAsteroid: 2,
-    asteroidsPerMilliseconds: 2000,
+    asteroidsPerMilliseconds: 6000,
+    prepositionScoreBonus: 200,
+    prepositionScoreMalus: 400,
     asteroidSpeed: {
         min: 120,
-        max: 220
+        max: 200
     },
     asteroidDestroyBonus: {
-        score: 200,
-        credits: 200
+        score: 50,
+        credits: 50
     },
     laserSpeedAddends: 800
 }

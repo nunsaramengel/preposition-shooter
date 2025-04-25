@@ -8,6 +8,7 @@ import OnboardComputer from './scenes/OnboardComputer.jsx';
 import PrepositionCruiser from './scenes/PrepositionCruiser.jsx';
 import StarBase from './scenes/StarBase.jsx';
 import WrongAnswer from './scenes/WrongAnswer.jsx';
+import ComputerRoom from './scenes/ComputerRoom.jsx';
 import Level2 from './scenes/Level2.jsx';
 import GameOver from './scenes/GameOver.jsx';
 import Test from './scenes/Test.jsx';
@@ -29,10 +30,11 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        Shooter,
+        StarBase,
+        ComputerRoom,
         PrepositionCruiser,
         Workshop,
-        StarBase,
-        Shooter,
         OnboardComputer,
         Test,
         Tutorial,

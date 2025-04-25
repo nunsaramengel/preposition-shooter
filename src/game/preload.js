@@ -30,6 +30,8 @@ scene.load.spritesheet('explosion', 'img/explosion.png', {
     scene.load.image('starbase3Doors', "img/starbase_3_doors.jpg")
     scene.load.image('madra', "img/madra.png")
     scene.load.image('dialogueBox', "img/dialogue.png")
+    // computer room
+
 
     // powerups
     scene.load.image('gold', 'img/powerups/pixelated/gold.png')

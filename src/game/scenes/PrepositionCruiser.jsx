@@ -9,6 +9,8 @@ class PrepositionCruiser extends Phaser.Scene {
     constructor() {
         super({ key: "PrepositionCruiser" })
         this.MAX_SHIELD = 10;
+        this.canShoot = true; // Flag, um zu steuern, ob geschossen werden darf
+        this.shootDelay = 1; 
         this.failureDrumSound = null;
         this.gameOverSound = null;
         this.shipExplosionSound = null;
@@ -69,14 +71,15 @@ class PrepositionCruiser extends Phaser.Scene {
         this.shipExplosionSound = new Howl({ src: ['audio/shipExplosion.wav'], volume: 1, onload: () => console.log('Ship explosion sound loaded'), onloaderror: (id, error) => console.error('Error loading ship explosion sound:', error) });
 
         this.NUMBER_OF_STARS = 1000;
-        this.SHIP_VELOCITY = 600;
-        this.LASER_SCALE = 0.15;
-        this.SHIP_SCALE = GameStore.shipScale;
+        this.SHIP_VELOCITY = GameStore.sceneConfig.shipVelocity;
+        this.LASER_SCALE = GameStore.sceneConfig.laserScale;
+        this.SHIP_SCALE = GameStore.sceneConfig.shipScale;
+        this.plasmaBeam = GameStore.sceneConfig.plasmaBeam
         this.laserSpeed = 1100;
         this.shipVelocityX = 0;
         this.stars = [];
         this.ship = this.physics.add.image(400, 550, 'shipP').setOrigin(0.5, 0.5).setCollideWorldBounds(true).setScale(this.SHIP_SCALE).setDepth(0); // Set ship's depth higher initially
-        this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 10 });
+        this.lasers = this.physics.add.group({ defaultKey: 'laser', maxSize: 6 });
         this.cursors = this.input.keyboard.createCursorKeys();
         this.input.keyboard.on('keydown-SPACE', this.shootLasers, this);
         this.anims.create({ key: 'explode', frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 15 }), frameRate: 20, repeat: false });
@@ -312,27 +315,62 @@ class PrepositionCruiser extends Phaser.Scene {
     }
 
     shootLasers() {
-        if (this.lasers.getLength() < this.lasers.maxSize) {
+        if (this.canShoot && this.lasers.getLength() <= this.lasers.maxSize - (GameStore.sceneConfig.yLaser ? 4 : 2)) {
+            this.canShoot = false;
+
             const shipWidth = this.ship.width * this.ship.scaleX;
+            const laserKey = GameStore.sceneConfig.plasmaBeam ? 'plasmaLaser' : 'laser';
+            const scaleKey = GameStore.sceneConfig.plasmaBeam ? GameStore.sceneConfig.plasmaScale : GameStore.sceneConfig.laserScale;
+            const laserSpeed = -this.laserSpeed;
+
+            // Normale Laser (immer vertikal)
             const leftLaser = this.lasers.get();
             if (leftLaser) {
-                leftLaser.setActive(true);
-                leftLaser.setVisible(true);
-                leftLaser.setPosition(this.ship.x - shipWidth / 2 + 35, this.ship.y + 10);
-                leftLaser.setScale(this.LASER_SCALE);
-                leftLaser.setVelocityY(-this.laserSpeed);
-                this.laserSound.play();
+                this.fireLaser(leftLaser, this.ship.x - shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
             }
             const rightLaser = this.lasers.get();
             if (rightLaser) {
-                rightLaser.setActive(true);
-                rightLaser.setVisible(true);
-                rightLaser.setPosition(this.ship.x + shipWidth / 2 - 35, this.ship.y + 10);
-                rightLaser.setScale(this.LASER_SCALE);
-                rightLaser.setVelocityY(-this.laserSpeed);
-                this.laserSound.play();
+                this.fireLaser(rightLaser, this.ship.x + shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
             }
+
+            // Y-Laser (wenn Upgrade gekauft wurde)
+            if (GameStore.sceneConfig.yLaser) {
+                const diagonalSpeed = laserSpeed / Math.sqrt(2);
+
+                const leftDiagonalLaser = this.lasers.get();
+                if (leftDiagonalLaser) {
+                    this.fireLaser(leftDiagonalLaser, this.ship.x + shipWidth, this.ship.y - 10, -diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
+                }
+
+                const rightDiagonalLaser = this.lasers.get();
+                if (rightDiagonalLaser) {
+                    this.fireLaser(rightDiagonalLaser, this.ship.x - shipWidth, this.ship.y - 10, diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
+                }
+            }
+
+            this.time.delayedCall(this.shootDelay, () => {
+                this.canShoot = true;
+            }, [], this);
         }
+    }
+
+    fireLaser(laser, x, y, velocityX, velocityY, key, scale, forcedAngle = null) {
+        laser.setActive(true);
+        laser.setVisible(true);
+        laser.setTexture(key);
+        laser.setPosition(x, y);
+        laser.setScale(scale);
+        laser.setVelocity(velocityX, velocityY);
+
+        if (forcedAngle !== null) {
+            laser.angle = forcedAngle;
+        } else {
+            const angleRad = Math.atan2(velocityY, velocityX);
+            const angleDeg = Phaser.Math.RadToDeg(angleRad);
+            laser.angle = angleDeg + 90;
+        }
+
+        this.laserSound.play();
     }
 
     hitShip(ship, object) {

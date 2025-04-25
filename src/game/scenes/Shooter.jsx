@@ -21,6 +21,7 @@ class Shooter extends Phaser.Scene {
             const newVerb = GameStore.verbs[GameStore.usedVerbs.length];
             GameStore.update({ currentVerb: newVerb })
             this.currentVerb = newVerb
+            console.log(this.usedVerbs)
         }
 
         this.scoreTrigger = new ScoreTrigger(this, {
@@ -196,7 +197,7 @@ class Shooter extends Phaser.Scene {
     this.LASER_SCALE = GameStore.sceneConfig.laserScale;
     this.SHIP_SCALE = GameStore.sceneConfig.shipScale;
     this.ASTEROID_ROTATION_SPEED = 500;
-    this.ONE_ASTEROID_PER_MS = 2000;
+    this.ONE_ASTEROID_PER_MS = GameStore.sceneConfig.asteroidsPerMilliseconds;
     this.ASTEROID_MIN_SPEED = 120;
     this.ASTEROID_MAX_SPEED = 220;
     this.asteroidImages = ['asteroid1', 'asteroid2', 'asteroid3', 'asteroid4', 'asteroid5'];
@@ -249,6 +250,7 @@ class Shooter extends Phaser.Scene {
 
     update() {
 
+        
         this.nebularBG.setScale(2)
         this.nebularBG.setAlpha(0.5)
         this.nebularBG.tilePositionY -= 0.2;
@@ -379,64 +381,64 @@ class Shooter extends Phaser.Scene {
         this.prepositionManager.stopSpawner();
     }
 
-shootLasers() {
-    if (this.canShoot && this.lasers.getLength() <= this.lasers.maxSize - (GameStore.sceneConfig.yLaser ? 4 : 2)) {
-        this.canShoot = false;
+    shootLasers() {
+        if (this.canShoot && this.lasers.getLength() <= this.lasers.maxSize - (GameStore.sceneConfig.yLaser ? 4 : 2)) {
+            this.canShoot = false;
 
-        const shipWidth = this.ship.width * this.ship.scaleX;
-        const laserKey = GameStore.sceneConfig.plasmaBeam ? 'plasmaLaser' : 'laser';
-        const scaleKey = GameStore.sceneConfig.plasmaBeam ? GameStore.sceneConfig.plasmaScale : GameStore.sceneConfig.laserScale;
-        const laserSpeed = -this.laserSpeed;
+            const shipWidth = this.ship.width * this.ship.scaleX;
+            const laserKey = GameStore.sceneConfig.plasmaBeam ? 'plasmaLaser' : 'laser';
+            const scaleKey = GameStore.sceneConfig.plasmaBeam ? GameStore.sceneConfig.plasmaScale : GameStore.sceneConfig.laserScale;
+            const laserSpeed = -this.laserSpeed;
 
-        // Normale Laser (immer vertikal)
-        const leftLaser = this.lasers.get();
-        if (leftLaser) {
-            this.fireLaser(leftLaser, this.ship.x - shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
-        }
-        const rightLaser = this.lasers.get();
-        if (rightLaser) {
-            this.fireLaser(rightLaser, this.ship.x + shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
-        }
-
-        // Y-Laser (wenn Upgrade gekauft wurde)
-        if (GameStore.sceneConfig.yLaser) {
-            const diagonalSpeed = laserSpeed / Math.sqrt(2);
-
-            const leftDiagonalLaser = this.lasers.get();
-            if (leftDiagonalLaser) {
-                this.fireLaser(leftDiagonalLaser, this.ship.x + shipWidth, this.ship.y - 10, -diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
+            // Normale Laser (immer vertikal)
+            const leftLaser = this.lasers.get();
+            if (leftLaser) {
+                this.fireLaser(leftLaser, this.ship.x - shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
+            }
+            const rightLaser = this.lasers.get();
+            if (rightLaser) {
+                this.fireLaser(rightLaser, this.ship.x + shipWidth / 2, this.ship.y - 10, 0, laserSpeed, laserKey, scaleKey, 0); // Winkel explizit auf -90 gesetzt
             }
 
-            const rightDiagonalLaser = this.lasers.get();
-            if (rightDiagonalLaser) {
-                this.fireLaser(rightDiagonalLaser, this.ship.x - shipWidth, this.ship.y - 10, diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
+            // Y-Laser (wenn Upgrade gekauft wurde)
+            if (GameStore.sceneConfig.yLaser) {
+                const diagonalSpeed = laserSpeed / Math.sqrt(2);
+
+                const leftDiagonalLaser = this.lasers.get();
+                if (leftDiagonalLaser) {
+                    this.fireLaser(leftDiagonalLaser, this.ship.x + shipWidth, this.ship.y - 10, -diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
+                }
+
+                const rightDiagonalLaser = this.lasers.get();
+                if (rightDiagonalLaser) {
+                    this.fireLaser(rightDiagonalLaser, this.ship.x - shipWidth, this.ship.y - 10, diagonalSpeed, diagonalSpeed, laserKey, scaleKey); // Winkel wird in fireLaser berechnet
+                }
             }
+
+            this.time.delayedCall(this.shootDelay, () => {
+                this.canShoot = true;
+            }, [], this);
+        }
+    }
+
+    fireLaser(laser, x, y, velocityX, velocityY, key, scale, forcedAngle = null) {
+        laser.setActive(true);
+        laser.setVisible(true);
+        laser.setTexture(key);
+        laser.setPosition(x, y);
+        laser.setScale(scale);
+        laser.setVelocity(velocityX, velocityY);
+
+        if (forcedAngle !== null) {
+            laser.angle = forcedAngle;
+        } else {
+            const angleRad = Math.atan2(velocityY, velocityX);
+            const angleDeg = Phaser.Math.RadToDeg(angleRad);
+            laser.angle = angleDeg + 90;
         }
 
-        this.time.delayedCall(this.shootDelay, () => {
-            this.canShoot = true;
-        }, [], this);
+        this.laserSound.play();
     }
-}
-
-fireLaser(laser, x, y, velocityX, velocityY, key, scale, forcedAngle = null) {
-    laser.setActive(true);
-    laser.setVisible(true);
-    laser.setTexture(key);
-    laser.setPosition(x, y);
-    laser.setScale(scale);
-    laser.setVelocity(velocityX, velocityY);
-
-    if (forcedAngle !== null) {
-        laser.angle = forcedAngle;
-    } else {
-        const angleRad = Math.atan2(velocityY, velocityX);
-        const angleDeg = Phaser.Math.RadToDeg(angleRad);
-        laser.angle = angleDeg + 90;
-    }
-
-    this.laserSound.play();
-}
 
   hitAsteroid(laser, asteroid) {
         const asteroidCenterX = asteroid.x;

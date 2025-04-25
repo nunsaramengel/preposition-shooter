@@ -10,7 +10,7 @@ export default class PrepositionManager {
         this.prepositionTextStyle = prepositionTextStyle;
         this.spawnTimer = null;
         this.spawnIntervalMin = 2000; // Aus deiner Shooter-Klasse
-        this.spawnIntervalMax = 5000; // Aus deiner Shooter-Klasse
+        this.spawnIntervalMax = 4000; // Aus deiner Shooter-Klasse
         this.pickedRightPrepositionSound = pickedRightPrepositionSound;
         this.pickedWrongPrepositionSound = pickedWrongPrepositionSound;
     }
@@ -63,10 +63,11 @@ export default class PrepositionManager {
 
         if (prepositionText === this.scene.currentVerb.rightPreposition) {
             this.pickedRightPrepositionSound.play();
-            this.scene.setScore(200);
+            this.scene.setScore(GameStore.sceneConfig.prepositionScoreBonus);
         } else if (prepositionText === this.scene.currentVerb.wrongPreposition) {
             this.pickedWrongPrepositionSound.play();
-            this.scene.setScore(-500);
+            this.scene.setScore(GameStore.sceneConfig.prepositionScoreMalus);
+
         }
         console.log("USED VERBS: ", GameStore.usedVerbs)
 
