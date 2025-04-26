@@ -64,12 +64,27 @@ export default class PrepositionManager {
         if (prepositionText === this.scene.currentVerb.rightPreposition) {
             this.pickedRightPrepositionSound.play();
             this.scene.setScore(GameStore.sceneConfig.prepositionScoreBonus);
+            this.displayAlert("전치사 잘 맞추셨습니다!")
+
         } else if (prepositionText === this.scene.currentVerb.wrongPreposition) {
             this.pickedWrongPrepositionSound.play();
             this.scene.setScore(GameStore.sceneConfig.prepositionScoreMalus);
-
+            this.displayAlert("전치사 틀렸습니다")
         }
         console.log("USED VERBS: ", GameStore.usedVerbs)
 
     }
+
+    displayAlert = (text) => {
+        const alertText = this.scene.add.text(400, 550, text, {
+            font: '30px Monospace',
+            fill: 'turquoise',
+            stroke: '#000000',
+            strokeThickness: 2
+        }).setOrigin(0.5).setDepth(1000);
+        this.scene.time.delayedCall(2500, () => {
+            alertText.destroy()
+        }, [], this)
+    }
+
 }
