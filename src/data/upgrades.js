@@ -5,12 +5,12 @@ const upgrades = [
         name: "plasmaBeam",
         requiredLevel: 1,
         cost: {
-            gold: 100,
-            lithium: 40,
-            plasma: 160,
-            titanium: 55,
-            iron: 35,
-            credits: 6000
+            gold: 10,
+            lithium: 4,
+            plasma: 6,
+            titanium: 5,
+            iron: 5,
+            credits: 60
         },
         acquired: false,
         affordable: false
@@ -21,12 +21,12 @@ const upgrades = [
         name: "powerUpPlus",
         requiredLevel: 1,
         cost: {
-            gold: 200,
-            lithium: 50,
-            plasma: 40,
-            titanium: 100,
-            iron: 85,
-            credits: 10000
+            gold: 2,
+            lithium: 5,
+            plasma: 4,
+            titanium: 10,
+            iron: 5,
+            credits: 10
         },
         acquired: false,
         affordable: false
@@ -37,12 +37,12 @@ const upgrades = [
         name: "plasmaShields",
         requiredLevel: 1,
         cost: {
-            gold: 45,
-            lithium: 25,
-            plasma: 150,
-            titanium: 15,
+            gold: 5,
+            lithium: 5,
+            plasma: 5,
+            titanium: 5,
             iron: 5,
-            credits: 7000
+            credits: 70
         },
         acquired: false,
         affordable: false
@@ -73,7 +73,7 @@ const upgrades = [
             plasma: 2,
             titanium: 1,
             iron: 10,
-            credits: 900
+            credits: 90
         },
         acquired: false,
         affordable: false
