@@ -72,8 +72,8 @@ const upgrades = [
             lithium: 8,
             plasma: 2,
             titanium: 1,
-            iron: 1,
-            credits: 9
+            iron: 10,
+            credits: 900
         },
         acquired: false,
         affordable: false

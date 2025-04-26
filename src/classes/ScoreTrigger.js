@@ -13,7 +13,6 @@ export default class ScoreTrigger {
 
         for (const [threshold, actionConfig] of this.triggers) {
             if (currentScore >= threshold && !this.triggeredScores.has(threshold)) {
-                console.log(`Score ${threshold} erreicht! Aktionen werden ausgeführt.`); // HINZUGEFÜGT
                 this.triggeredScores.add(threshold);
                 this.executeActions(actionConfig);
             }
@@ -46,9 +45,6 @@ export default class ScoreTrigger {
             this.scene.setScore(actionConfig.setScoreAmount);
         }
         if (actionConfig.setLevel !== undefined) {
-            console.log(`setLevel-Aktion gefunden. Wert: ${
-                actionConfig.setLevel
-            }`); // HINZUGEFÜGT
             this.scene.setLevel(actionConfig.setLevel);
         }
 

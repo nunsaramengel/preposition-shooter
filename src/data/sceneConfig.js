@@ -18,7 +18,7 @@ const sceneConfig = {
     hitsToDestroyAsteroid: 2,
     asteroidsPerMilliseconds: 6000,
     prepositionScoreBonus: 200,
-    prepositionScoreMalus: 400,
+    prepositionScoreMalus: -400,
     asteroidSpeed: {
         min: 120,
         max: 200
