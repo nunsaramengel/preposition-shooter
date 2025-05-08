@@ -491,6 +491,7 @@ shootLasers() {
 
     hitShip(ship, asteroid) {
         if (!this.isGameOverSequence) {
+            GameStore.update(GameStore.sceneConfig.gameOverReason = "쉴드가 내려가서 함선이 파괴되어 사망하시였어요 흑흑" )
             this.flickerShip();
             this.hitSound.play();
             this.reduceShield();

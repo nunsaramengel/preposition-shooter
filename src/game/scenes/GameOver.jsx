@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import GameStore from '../GameStore';
 
 class GameOver extends Phaser.Scene {
     constructor() {
@@ -21,6 +22,7 @@ class GameOver extends Phaser.Scene {
         const centerY = this.cameras.main.height / 2;
 
         this.add.text(centerX, centerY - 100, 'GAME OVER', { fontSize: '50px', fill: '#fff' }).setOrigin(0.5);
+        this.add.text(centerX, centerY - 50, GameStore.sceneConfig.gameOverReason, { fontSize: '20px', fill: 'turquoise' }).setOrigin(0.5);
 
         // Erstelle den Button als Text-Objekt
         const restartButton = this.add.text(centerX, centerY + 50, '재시작', { fontSize: '32px', fill: '#fff', backgroundColor: '#2E2C2C', padding: { x: 20, y: 10 } })

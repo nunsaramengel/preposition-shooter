@@ -28,7 +28,8 @@ const sceneConfig = {
         credits: 200
     },
     asteroidFlyThroughMalus: 50,
-    laserSpeedAddends: 800
+    laserSpeedAddends: 800,
+    gameOverReason: "함선이 파괴되었습니다"
 }
 
 export default sceneConfig

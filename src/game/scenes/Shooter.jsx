@@ -6,6 +6,7 @@ import fadeIn from '../func/fadeIn.js';
 import ScoreTrigger from '../../classes/ScoreTrigger.js';
 import PowerUpManager from '../../classes/PowerUpManager.js';
 import PrepositionManager from '../../classes/PrepositionManager.js';
+import sceneConfig from '../../data/sceneConfig.js';
 
 class Shooter extends Phaser.Scene {
     constructor() {
@@ -294,9 +295,11 @@ class Shooter extends Phaser.Scene {
 
         if (this.shield <= 0 && !this.isGameOverSequence) {
             this.startGameOverSequence();
+            GameStore.update(GameStore.sceneConfig.gameOverReason = "쉴드가 내려가서 함선이 파괴되어 사망하시였어요 흑흑" )
         }
         if (this.score <= 0 && !this.isGameOverSequence) {
             this.startGameOverSequence();
+            GameStore.update({ sceneConfig: { gameOverReason: "너무 많은 소행성이 지구에 충돌해서 인류의 생존에 대한 희망이 없으므로 당신의 함선에서 자폭 시퀀스가 활성화되었습니다. 흑흑" } })
         }
 
         // prepositions dropping
@@ -511,6 +514,7 @@ class Shooter extends Phaser.Scene {
 
     hitShip(ship, asteroid) {
         if (!this.isGameOverSequence) {
+            GameStore.update(GameStore.sceneConfig.gameOverReason = "쉴드가 내려가서 함선이 파괴되어 사망하시였어요 흑흑" )
             this.flickerShip();
             this.hitSound.play();
             this.reduceShield();

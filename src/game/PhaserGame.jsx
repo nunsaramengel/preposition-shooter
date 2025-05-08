@@ -30,6 +30,7 @@ export default function PhaserGame() {
       parent: 'phaser-container',
       scene: [
         MainMenu,
+        GameOver,
         Shooter,
         StarBase,
         ComputerRoom,
@@ -41,7 +42,6 @@ export default function PhaserGame() {
         WrongAnswer,
         RingMenu,
         ApproachingStarBaseMonitor,
-        GameOver,
         Level2,
       ],
       physics: {
