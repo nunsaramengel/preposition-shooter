@@ -283,7 +283,7 @@ class Level2 extends Phaser.Scene {
 
                 // Check if the asteroid has passed the bottom of the screen
                 if (asteroid.y > 650) {
-                    const newScore = Math.max(0, GameStore.score - 500);
+                    const newScore = Math.max(0, GameStore.score - GameStore.sceneConfig.asteroidFlyThroughMalus);
                     GameStore.update({ score: newScore }); // Reduce score, but not below 0
                     this.score = newScore; // Update local score
                     this.hopeLossSound.play(); // Play the sad sound

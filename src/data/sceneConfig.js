@@ -17,16 +17,17 @@ const sceneConfig = {
     plasmaShield: false,
     hitsToDestroyAsteroid: 2,
     asteroidsPerMilliseconds: 6000,
-    prepositionScoreBonus: 200,
-    prepositionScoreMalus: -400,
+    prepositionScoreBonus: 400,
+    prepositionScoreMalus: -50,
     asteroidSpeed: {
         min: 120,
         max: 200
     },
     asteroidDestroyBonus: {
-        score: 50,
-        credits: 50
+        score: 200,
+        credits: 200
     },
+    asteroidFlyThroughMalus: 50,
     laserSpeedAddends: 800
 }
 
